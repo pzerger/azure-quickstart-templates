@@ -2,7 +2,7 @@
 
 | Deploy to Azure  | Author                          | Template Name   |
 |:-----------------|:--------------------------------| :---------------| :---------------|
-| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fchef-12-ubuntu-vm%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Provision a Ubuntu VM and  bootstrapp the Chef Agent (https://github.com/starkfell/azure-quickstart-templates/tree/master/chef-12-ubuntu-vm)
+| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fchef-12-ubuntu-vm%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Provision a Ubuntu VM and  bootstrapp the Chef Agent (https://github.com/starkfell/azure-quickstart-templates/tree/master/chef-12-ubuntu-vm)
 
 
  This template provisions an Ubuntu VM on Azure and installs Chef 12 Server.
