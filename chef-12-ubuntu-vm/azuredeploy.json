@@ -17,13 +17,13 @@
         "adminUserName": {
             "type": "string",
             "metadata" : {
-              "description": "Admin user name for the Virtual Machines"
+              "description": "Admin user name for the Ubuntu VM."
             }
         },
         "adminPassword": {
             "type": "securestring",
             "metadata" : {
-              "description": "Admin password for the Virtual Machine"
+              "description": "Admin password for the Ubuntu VM"
             }
         },
 
@@ -53,17 +53,17 @@
 
           "location": {
           "type": "string",
-           "defaultValue" : "West US",
+           "defaultValue" : "West Europe",
                 "metadata": {
-              "description": "Location name where the corresponding Azure artifacts will be created"
+              "description": "Location name where the corresponding Azure artifacts will be created. The default is West Europe."
           }
         },
 
           "vmSize": {
            "type": "string",
-             "defaultValue": "Standard_A0",
+             "defaultValue": "Standard_A2",
                 "metadata": {
-                 "description": "VM Size"
+                 "description": "VM Size. The default value is A2 Standard."
              }
          },
 
