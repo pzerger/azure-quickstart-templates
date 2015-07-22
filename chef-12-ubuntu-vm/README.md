@@ -19,10 +19,11 @@ Useful Links for learning about Chef:
 
 <a href="http://docs.chef.io/" target="_blank">Chef Documentation</a>
 
+
  This template requires the following parameters:
 
- | Name   | Description    |
- |:--- |:---|
+ | Name             | Description                     |
+ |:-----------------| :--------------------------------| :---------------|
  | location | Location name where the corresponding Azure artifacts will be created |
  | storage account  | Unique  Name for the Storage Account where the Virtual Machine's disks will be placed |
  | dnsName | DNS name for the VM |
