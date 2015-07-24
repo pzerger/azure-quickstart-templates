@@ -136,7 +136,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('dnsNameForPublicIP'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('dnsNameForPublicIP'))]"
                             },
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
