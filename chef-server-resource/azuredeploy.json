@@ -52,7 +52,7 @@
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "OSDiskName": "ChefServerOSDisk",
-        "nicName": "ChefServerNic",
+        "nicName": "chefservernic001",
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "learnchefsubnet",
         "subnetPrefix": "10.0.0.0/24",
