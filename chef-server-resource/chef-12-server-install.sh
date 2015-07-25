@@ -1,4 +1,8 @@
 #!/bin/bash
+# 
+# Script Development is stil in progress...
+#
+#
 
 # Input Argument Variables
 CHEF_USERNAME="chefadmin"
