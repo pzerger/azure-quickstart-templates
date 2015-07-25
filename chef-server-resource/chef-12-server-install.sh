@@ -2,6 +2,8 @@
 # 
 # Script Development is stil in progress...
 #
+# Script is based heavily off of: https://github.com/Azure/azure-quickstart-templates/blob/master/nagios-on-ubuntu/nagios-core-install.sh
+#
 #
 
 # Input Argument Variables
