@@ -2,7 +2,7 @@
 
 | Deploy to Azure  | Author                          | Template Name   |
 |:-----------------|:--------------------------------| :---------------| :---------------|
-| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fsys-cntr-deploy%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | This is a Test AD Deployment (https://github.com/starkfell/azure-quickstart-templates/tree/master/sys-cntr-deploy)
+| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fad-deploy-new-domain%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | This is a Test AD Deployment (https://github.com/starkfell/azure-quickstart-templates/tree/master/ad-deploy-new-domain)
 
 
  This template provisions an AD Environment.
