@@ -586,42 +586,43 @@
                         }
                     ]
                 },
-                "resources": [
-                    {
-                        "type": "Microsoft.Compute/virtualMachines/extensions",
-                        "name": "SQL1/domainjoin",
-                        "apiVersion": "2015-05-01-preview",
-                        "location": "[resourceGroup().location]",
-                        "dependsOn": [
-                            "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
-                            "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                            "Microsoft.Resources/deployments/UpdateVNetDNS"
-                        ],
-                        "properties": {
-                            "publisher": "Microsoft.Powershell",
-                            "type": "DSC",
-                            "typeHandlerVersion": "1.9",
-                            "settings": {
-                                "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
-                                "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
-                                "Properties": {
-                                    "DomainName": "[parameters('AdDomainNameFQDN')]",
-                                    "AdminCreds": {
-                                        "UserName": "[parameters('ADDCAdminUserName')]",
-                                        "Password": "PrivateSettingsRef:adminPassword"
-                                    }
+
+            "resources": [
+                {
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "name": "SQL1/domainjoin",
+                    "apiVersion": "2015-05-01-preview",
+                    "location": "[resourceGroup().location]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
+                        "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
+                        "Microsoft.Resources/deployments/UpdateVNetDNS"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Powershell",
+                        "type": "DSC",
+                        "typeHandlerVersion": "1.9",
+                        "settings": {
+                            "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
+                            "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
+                            "Properties": {
+                                "DomainName": "[parameters('AdDomainNameFQDN')]",
+                                "AdminCreds": {
+                                    "UserName": "[parameters('ADDCAdminUserName')]",
+                                    "Password": "PrivateSettingsRef:adminPassword"
                                 }
-                            },
-                            "protectedSettings": {
-                                "Items": {
-                                    "adminPassword": "[parameters('SQL1AdminPassword')]"
-                                }
+                            }
+                        },
+                        "protectedSettings": {
+                            "Items": {
+                                "adminPassword": "[parameters('SQL1AdminPassword')]"
                             }
                         }
                     }
-                ]
-            },
-
+                }
+            ]
+        },
+       
             "name": "[variables('ciresonadpubipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
             "location": "[parameters('location')]",
@@ -637,13 +638,12 @@
                 }
             },
             "resources": [
-                {
+ {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
                     "name": "SQL1/domainjoin",
                     "apiVersion": "2015-05-01-preview",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonadpubipName'))]",
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
                         "Microsoft.Resources/deployments/UpdateVNetDNS"
