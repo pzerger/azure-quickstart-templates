@@ -4,6 +4,7 @@
     "parameters": {
         "location": {
             "type": "string",
+            "defaultValue": "West Europe",
             "allowedValues": [ "East US", "West US", "West Europe", "East Asia", "South East Asia" ],
             "metadata": {
                 "Description": "Deployment location"
@@ -203,7 +204,7 @@
                                 "id": "[variables('ADDCSubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonadpubipName'))]"
+                                "id": "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonadpubipName'))]"
                             }
                         }
                     }
