@@ -646,7 +646,7 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                        "[resourceId('Microsoft.Network/publicIPAddresses', variable('ciresonadpubip'))]",
+                        "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonadpubipName'))]",
                         "Microsoft.Resources/deployments/UpdateVNetDNS"
                     ],
                     "properties": {
