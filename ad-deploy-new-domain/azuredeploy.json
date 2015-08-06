@@ -133,7 +133,8 @@
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
-        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]"
+        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
+        "ciresonadpubipName2": "ciresonadpubip"
     },
     "resources": [
         {
@@ -204,11 +205,27 @@
                                 "id": "[variables('ADDCSubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonadpubipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonadpubipName'))]"
                             }
                         }
                     }
                 ]
+            }
+        },
+                {
+            "name": "[variables('ciresonadpubipName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "ciresonadpubip"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('ciresonadpubipName')]"
+                }
             }
         },
         {
