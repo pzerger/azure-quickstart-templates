@@ -41,7 +41,7 @@
         },
         "contososysctrappName": {
             "type": "string",
-            "defaultValue": "contosopocstorage"
+            "defaultValue": "contososysctrapp"
         },
         "contososysctrappType": {
             "type": "string",
@@ -87,7 +87,7 @@
         },
         "ciresonadpubipDnsName": {
             "type": "string",
-            "defaultValue": "ciresonadrdpaccess",
+            "defaultValue": "ciresonadsrv",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the AD VM."
             }
