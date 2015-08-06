@@ -1,0 +1,337 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "allowedValues": [ "East US", "West US", "West Europe", "East Asia", "South East Asia" ],
+            "metadata": {
+                "Description": "Deployment location"
+            }
+        },
+        "addressPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/16",
+            "metadata": {
+                "Description": "Address prefix"
+            }
+
+        },
+        "DCsubnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.1.0/24",
+            "metadata": {
+                "Description": "DC Subnet Prefix"
+            }
+        },
+        "SCsubnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.2.0/24",
+            "metadata": {
+                "Description": "SC Subnet Prefix"
+            }
+        },
+        "SQLsubnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.3.0/24",
+            "metadata": {
+                "Description": "SQL Subnet Prefix"
+            }
+        },
+        "contososysctrappName": {
+            "type": "string",
+            "defaultValue": "contosopocstorage"
+        },
+        "contososysctrappType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "contososysctrappLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        },
+        "ADDCName": {
+            "type": "string",
+            "defaultValue": "ADDC"
+        },
+        "ADDCAdminUserName": {
+            "type": "string",
+            "defaultValue": "adadmin"
+        },
+        "ADDCAdminPassword": {
+            "type": "securestring",
+            "defaultValue": "P@ssw0rd1!"
+        },
+        "ADDCWindowsOSVersion": {
+            "type": "string",
+            "defaultValue": "2012-R2-Datacenter",
+            "allowedValues": [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "Windows-Server-Technical-Preview"
+            ]
+        },
+        "ciresonadpubipDnsName": {
+            "type": "string"
+        },
+        "ADdomainNameFQDN": {
+            "type": "string",
+            "defaultValue": "contoso.corp",
+            "metadata": {
+                "description": "The FQDN of the AD Domain created "
+            }
+        },
+        "adNicIPAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The IP address of the new AD VM"
+            },
+            "defaultValue": "10.0.1.4"
+        },
+        "AssetLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources such as templates and DSC modules that the script is dependent"
+            },
+            "defaultValue": "https://raw.githubusercontent.com/pzerger/CommunitySamples/master/ARM"
+        },
+        "UpdateVNetDNSTemplateFile": {
+            "type": "string",
+            "defaultValue": "10.0.1.0/24"
+        }
+    },
+    "variables": {
+        "adDataDisk": "ADDataDisk",
+        "adDataDiskSize": 1000,
+        "ADDCImagePublisher": "MicrosoftWindowsServer",
+        "ADDCImageOffer": "WindowsServer",
+        "ADDCOSDiskName": "ADDCOSDisk",
+        "ADDCVmSize": "Standard_D2",
+        "ADDCVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'ContosoNET')]",
+        "ADDCSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DCSubnet')]",
+        "ADDCStorageAccountContainerName": "vhds",
+        "ADDCNicName": "[concat(parameters('ADDCName'), 'NetworkInterface')]",
+        "adModulesURL": "[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
+        "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
+        "ciresonadpubipName": "ciresonadpubip",
+        "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
+        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "ContosoNET",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "DCSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('DCsubnetPrefix')]"
+                        }
+                    },
+                    {
+                        "name": "SCSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('SCsubnetPrefix')]"
+                        }
+                    },
+                    {
+                        "name": "SQLSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('SQLsubnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('contososysctrappName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('contososysctrappLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "contososysctrapp"
+            },
+            "properties": {
+                "accountType": "[parameters('contososysctrappType')]"
+            }
+        },
+        {
+            "name": "[variables('ADDCNicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'ContosoNET')]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonadpubipName'))]"
+            ],
+            "tags": {
+                "displayName": "ADDCNic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('ADDCSubnetRef')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonadpubipName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('ADDCName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('ADDCNicName'))]"
+            ],
+            "tags": {
+                "displayName": "ADDC"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('ADDCVmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[parameters('ADDCName')]",
+                    "adminUsername": "[parameters('ADDCAdminUsername')]",
+                    "adminPassword": "[parameters('ADDCAdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('ADDCImagePublisher')]",
+                        "offer": "[variables('ADDCImageOffer')]",
+                        "sku": "[parameters('ADDCWindowsOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "ADDCOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('ADDCStorageAccountContainerName'), '/', variables('ADDCOSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": [
+                        {
+                            "vhd": {
+                                "uri": "[concat('http://contososysctrapp.blob.core.windows.net/vhds/', variables('adDataDisk'),'-1.vhd')]"
+                            },
+                            "name": "[concat('ADDC','-data-disk1')]",
+                            "caching": "None",
+                            "createOption": "empty",
+                            "diskSizeGB": "[variables('adDataDiskSize')]",
+                            "lun": 0
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('ADDCNicName'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "name": "[concat(parameters('ADDCName'),'/CreateADForest')]",
+                    "apiVersion": "2015-05-01-preview",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('ADDCName'))]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Powershell",
+                        "type": "DSC",
+                        "typeHandlerVersion": "1.7",
+                        "settings": {
+                            "ModulesUrl": "[variables('adModulesURL')]",
+                            "ConfigurationFunction": "[variables('adConfigurationFunction')]",
+                            "Properties": {
+                                "DomainName": "[parameters('ADdomainNameFQDN')]",
+                                "AdminCreds": {
+                                    "UserName": "[parameters('ADDCAdminUserName')]",
+                                    "Password": "PrivateSettingsRef:AdminPassword"
+                                }
+                            }
+                        },
+                        "protectedSettings": {
+                            "Items": {
+                                "AdminPassword": "[parameters('ADDCAdminPassword')]"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "UpdateVNetDNS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('vnetwithDNSTemplateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "virtualNetworkName": {
+                        "value": "ContosoNET"
+                    },
+                    "virtualNetworkAddressRange": {
+                        "value": "[parameters('addressPrefix')]"
+                    },
+                    "subnetName": {
+                        "value": "DCSubnet"
+                    },
+                    "subnetRange": {
+                        "value": "[parameters('DCSubnetPrefix')]"
+                    },
+                    "DNSServerAddress": {
+                        "value": [
+                            "[parameters('adNicIPAddress')]"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
