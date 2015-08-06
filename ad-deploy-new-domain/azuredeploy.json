@@ -54,7 +54,7 @@
         },
         "contososysctrappLocation": {
             "type": "string",
-            "defaultValue": "West US",
+            "defaultValue": "West Europe",
             "allowedValues": [
                 "East US",
                 "West US",
@@ -111,7 +111,7 @@
             "metadata": {
                 "description": "The location of resources such as templates and DSC modules that the script is dependent"
             },
-            "defaultValue": "https://raw.githubusercontent.com/pzerger/CommunitySamples/master/ARM"
+            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain"
         },
         "UpdateVNetDNSTemplateFile": {
             "type": "string",
