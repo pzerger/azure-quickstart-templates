@@ -133,8 +133,7 @@
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
-        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
-        "ciresonadpubipName2": "ciresonadpubip"
+        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]"
     },
     "resources": [
         {
