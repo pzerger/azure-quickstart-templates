@@ -85,7 +85,11 @@
             ]
         },
         "ciresonadpubipDnsName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "ciresonadrdpaccess",
+            "metadata": {
+                "description": "This is the FQDN for RDP Access into the AD VM."
+            }
         },
         "ADdomainNameFQDN": {
             "type": "string",
@@ -126,7 +130,7 @@
         "ADDCNicName": "[concat(parameters('ADDCName'), 'NetworkInterface')]",
         "adModulesURL": "[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
-        "ciresonadpubipName": "ciresonadpubip",
+        "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]"
     },
