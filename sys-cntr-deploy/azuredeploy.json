@@ -593,7 +593,7 @@
                     "apiVersion": "2015-05-01-preview",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachines/', parameters('SQL1Name'))]",
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
                         "Microsoft.Resources/deployments/UpdateVNetDNS"
                     ],
@@ -643,7 +643,7 @@
                     "apiVersion": "2015-05-01-preview",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('SQL1Name'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachines/', parameters('SQL1Name'))]",
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
                         "Microsoft.Resources/deployments/UpdateVNetDNS"
                     ],
