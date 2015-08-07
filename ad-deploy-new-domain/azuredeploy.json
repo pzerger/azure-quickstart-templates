@@ -316,6 +316,24 @@
                             }
                         }
                     }
+                },
+                {
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "name": "Custom PSScript - Hello Zerger",
+                    "apiVersion": "2015-05-01-preview",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('ADDCName'))]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Compute",
+                        "type": "CustomScriptExtension",
+                        "typeHandlerVersion": "1.2",
+                        "settings": {
+                            "fileUris": [ "[variables('customPSScriptUri')]" ],
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('customPSScriptName'))]"
+                        }
+                    }
                 }
             ]
         },
@@ -353,24 +371,6 @@
                             "[parameters('adNicIPAddress')]"
                         ]
                     }
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "Custom PSScript - Hello Zerger",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('ADDCName'))]"
-            ],
-            "properties": {
-                "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.2",
-                "settings": {
-                    "fileUris": [ "[variables('customPSScriptUri')]" ],
-                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('customPSScriptName'))]"
                 }
             }
         }
