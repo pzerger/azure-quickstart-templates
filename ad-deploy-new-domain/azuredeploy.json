@@ -134,7 +134,7 @@
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
-        "customPSScriptUri": "[concat(parameters('AssetLocation'),'/HelloZerger.ps1')]",
+        "customPSScriptUri": "http://contosoazure.blob.core.windows.net/scripts/HelloZerger.ps1",
         "customPSScriptName": "HelloZerger.ps1"
     },
     "resources": [
