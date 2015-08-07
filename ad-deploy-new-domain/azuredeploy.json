@@ -133,7 +133,9 @@
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
-        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]"
+        "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
+        "customPSScriptUri": "[concat(parameters('AssetLocation'),'/HelloZerger.ps1')]",
+        "customPSScriptName": "HelloZerger.ps1"
     },
     "resources": [
         {
@@ -351,6 +353,24 @@
                             "[parameters('adNicIPAddress')]"
                         ]
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "Custom PSScript - Hello Zerger",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('ADDCName'))]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.2",
+                "settings": {
+                    "fileUris": [ "[variables('customPSScriptUri')]" ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('customPSScriptName'))]"
                 }
             }
         }
