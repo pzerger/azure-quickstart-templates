@@ -134,8 +134,8 @@
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
-        "customPSScriptUri": "http://contosoazure.blob.core.windows.net/scripts/HelloZerger.ps1",
-        "customPSScriptName": "HelloZerger.ps1"
+        "installADToolsScriptUri": "http://contosoazure.blob.core.windows.net/scripts/Install-AD-Mgmt-Tools.ps1",
+        "installADToolsScriptName": "Install-AD-Mgmt-Tools.ps1"
     },
     "resources": [
         {
@@ -330,8 +330,8 @@
                         "type": "CustomScriptExtension",
                         "typeHandlerVersion": "1.2",
                         "settings": {
-                            "fileUris": [ "[variables('customPSScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('customPSScriptName'))]"
+                            "fileUris": [ "[variables('installADToolsScriptUri')]" ],
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('installADToolsScriptName'))]"
                         }
                     }
                 }
