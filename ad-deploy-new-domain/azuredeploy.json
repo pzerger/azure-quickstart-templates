@@ -323,7 +323,7 @@
                             "apiVersion": "2015-05-01-preview",
                             "location": "[parameters('location')]",
                             "dependsOn": [
-                                "[resourceId('Microsoft.Compute/virtualMachines/extensions/', [concat(parameters('ADDCName'),'/CreateADForest')]]"
+                                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]"
                             ],
                             "properties": {
                                 "publisher": "Microsoft.Compute",
