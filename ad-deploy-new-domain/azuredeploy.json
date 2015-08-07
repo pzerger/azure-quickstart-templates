@@ -315,25 +315,27 @@
                                 "AdminPassword": "[parameters('ADDCAdminPassword')]"
                             }
                         }
-                    }
-                },
-                {
-                    "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(parameters('ADDCName'), '/' ,'CustomScriptExtension')]",
-                    "apiVersion": "2015-05-01-preview",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('ADDCName'))]"
-                        ],
-                    "properties": {
-                        "publisher": "Microsoft.Compute",
-                        "type": "CustomScriptExtension",
-                        "typeHandlerVersion": "1.2",
-                        "settings": {
-                            "fileUris": [ "[variables('installADToolsScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('installADToolsScriptName'))]"
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Compute/virtualMachines/extensions",
+                            "name": "[concat(parameters('ADDCName'), '/' ,'CustomScriptExtension')]",
+                            "apiVersion": "2015-05-01-preview",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Compute/virtualMachines/extensions/', [concat(parameters('ADDCName'),'/CreateADForest')]]"
+                            ],
+                            "properties": {
+                                "publisher": "Microsoft.Compute",
+                                "type": "CustomScriptExtension",
+                                "typeHandlerVersion": "1.2",
+                                "settings": {
+                                    "fileUris": [ "[variables('installADToolsScriptUri')]" ],
+                                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('installADToolsScriptName'))]"
+                                }
+                            }
                         }
-                    }
+                    ]
                 }
             ]
         },
