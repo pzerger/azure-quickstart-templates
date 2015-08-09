@@ -25,11 +25,11 @@
                 "Description": "DC Subnet Prefix"
             }
         },
-        "SCsubnetPrefix": {
+        "ChefsubnetPrefix": {
             "type": "string",
             "defaultValue": "10.0.2.0/24",
             "metadata": {
-                "Description": "SC Subnet Prefix"
+                "Description": "Chef Subnet Prefix"
             }
         },
         "SQLsubnetPrefix": {
@@ -67,13 +67,25 @@
             "type": "string",
             "defaultValue": "ADDC"
         },
+        "CHEFSRVName": {
+            "type": "string",
+            "defaultValue": "CHEFSRV"
+        },
         "ADDCAdminUserName": {
             "type": "string",
             "defaultValue": "adadmin"
         },
+        "CHEFSRVAdminUserName": {
+            "type": "string",
+            "defaultValue": "chefadmin"
+        },
         "ADDCAdminPassword": {
             "type": "securestring",
             "defaultValue": "P@ssw0rd1!"
+        },
+        "CHEFSRVAdminPassword": {
+            "type": "securestring",
+            "defaultValue": "LearnChef!"
         },
         "ADDCWindowsOSVersion": {
             "type": "string",
@@ -85,11 +97,35 @@
                 "Windows-Server-Technical-Preview"
             ]
         },
+        "UbuntuOSVersion": {
+            "type": "string",
+            "defaultValue": "14.04.2-LTS",
+            "allowedValues": [
+                "12.04.2-LTS",
+                "12.04.3-LTS",
+                "12.04.4-LTS",
+                "12.04.5-LTS",
+                "12.10",
+                "14.04.2-LTS",
+                "14.10",
+                "15.04"
+            ],
+            "metadata": {
+                "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.2-LTS, 12.04.3-LTS, 12.04.4-LTS, 12.04.5-LTS, 12.10, 14.04.2-LTS, 14.10, 15.04."
+            }
+        },
         "ciresonadpubipDnsName": {
             "type": "string",
             "defaultValue": "ciresonadsrv",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the AD VM."
+            }
+        },
+        "ciresonchefsrvpubipDnsName": {
+            "type": "string",
+            "defaultValue": "ciresonchefsrv",
+            "metadata": {
+                "description": "The is the FQDN for SSH Access into the Chef Server."
             }
         },
         "ADdomainNameFQDN": {
@@ -106,6 +142,13 @@
             },
             "defaultValue": "10.0.1.4"
         },
+        "ChefNicIPAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The IP address of the new Chef Server VM."
+            },
+            "defaultValue": "10.0.2.4"
+        }
         "AssetLocation": {
             "type": "string",
             "metadata": {
@@ -123,15 +166,23 @@
         "adDataDiskSize": 1000,
         "ADDCImagePublisher": "MicrosoftWindowsServer",
         "ADDCImageOffer": "WindowsServer",
+        "CHEFSRVImagePublisher": "Canonical",
+        "CHEFSRVImageOffer": "UbuntuServer",
         "ADDCOSDiskName": "ADDCOSDisk",
+        "CHEFSRVOSDiskName": "CHEFSRVOSDisk",
         "ADDCVmSize": "Standard_D2",
+        "CHEFSRVVmSize": "Standard_D2",
         "ADDCVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'ContosoNET')]",
         "ADDCSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DCSubnet')]",
+        "ChefSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'ChefSubnet')]",
         "ADDCStorageAccountContainerName": "vhds",
+        "CHEFSRVStorageAccountContainerName": "vhds",
         "ADDCNicName": "[concat(parameters('ADDCName'), 'NetworkInterface')]",
+        "CHEFSRVNicName": "[concat(parameters('CHEFSRVName'), 'NetworkInterface')]",
         "adModulesURL": "[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
         "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
+        "ciresonchefsrvpubipName": "[parameters('ciresonchefsrvpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "http://contosoazure.blob.core.windows.net/scripts/Install-AD-Mgmt-Tools.ps1",
@@ -157,9 +208,9 @@
                         }
                     },
                     {
-                        "name": "SCSubnet",
+                        "name": "ChefSubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('SCsubnetPrefix')]"
+                            "addressPrefix": "[parameters('ChefsubnetPrefix')]"
                         }
                     },
                     {
@@ -214,6 +265,35 @@
             }
         },
         {
+            "name": "[variables('CHEFSRVNicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'ContosoNET')]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonchefsrvpubipName'))]"
+            ],
+            "tags": {
+                "displayName": "ChefSrvNic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('ChefSubnetRef')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonchefsrvpubipName'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
             "name": "[variables('ciresonadpubipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
             "location": "[parameters('location')]",
@@ -226,6 +306,21 @@
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
                     "domainNameLabel": "[variables('ciresonadpubipName')]"
+                }
+            }
+        },
+        {
+            "name": "[variables('ciresonchefsrvpubipName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "tags": {
+                "displayName": "ciresonchefsrvpubip"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('ciresonchefsrvpubipName')]"
                 }
             }
         },
@@ -338,6 +433,53 @@
                     ]
                 }
             ]
+        },
+        {
+
+            "name": "[parameters('CHEFSRVName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-05-01-preview",
+            "tags": {
+                "displayName": "CHEFSRV"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('CHEFSRVNicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('CHEFSRVVmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[parameters('CHEFSRVName')]",
+                    "adminUsername": "[parameters('CHEFSRVAdminUserName')]",
+                    "adminPassword": "[parameters('CHEFSRVAdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('CHEFSRVImagePublisher')]",
+                        "offer": "[variables('CHEFSRVImageOffer')]",
+                        "sku": "[parameters('UbuntuOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "CHEFSRVOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('CHEFSRVStorageAccountContainerName'), '/', variables('CHEFSRVOSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('CHEFSRVNicName'))]"
+                        }
+                    ]
+                }
+            }
         },
         {
             "name": "UpdateVNetDNS",
