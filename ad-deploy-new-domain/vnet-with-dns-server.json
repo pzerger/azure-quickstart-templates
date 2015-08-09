@@ -37,11 +37,11 @@
                 "Description": "DC Subnet Prefix"
             }
         },
-        "SCsubnetPrefix": {
+        "ChefsubnetPrefix": {
             "type": "string",
             "defaultValue": "10.0.2.0/24",
             "metadata": {
-                "Description": "SC Subnet Prefix"
+                "Description": "Chef Subnet Prefix"
             }
         },
         "SQLsubnetPrefix": {
@@ -97,9 +97,9 @@
                         }
                     },
                     {
-                        "name": "SCSubnet",
+                        "name": "ChefSubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('SCsubnetPrefix')]"
+                            "addressPrefix": "[parameters('ChefsubnetPrefix')]"
                         }
                     },
                     {
