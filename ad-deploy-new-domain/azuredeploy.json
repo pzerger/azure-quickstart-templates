@@ -148,7 +148,7 @@
                 "description": "The IP address of the new Chef Server VM."
             },
             "defaultValue": "10.0.2.4"
-        }
+        },
         "AssetLocation": {
             "type": "string",
             "metadata": {
