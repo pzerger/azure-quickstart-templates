@@ -496,7 +496,7 @@
                         "typeHandlerVersion": "1.2",
                         "settings": {
                             "fileUris": [ "[variables('installChefServerScriptUri')]" ],
-                            "commandToExecute": "[concat('sh install_chef_server.sh'))]"
+                            "commandToExecute": "[concat('sh ', variables('installChefServerScriptName'))]"
                         }
                     }
                 }
