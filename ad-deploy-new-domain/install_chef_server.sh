@@ -36,7 +36,7 @@ wget https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-serv
 dpkg -i chef-server-core_12.1.0-1_amd64.deb
 
 # Running the Chef Server Initial Configuration
-chef-server-ctl-reconfigure
+chef-server-ctl reconfigure
 
 # Creating First User on the Chef Server
 chef-server-ctl user-create $CHEF_USERNAME Chef Admin chefadmin@devops.io $CHEF_PASSWORD --filename /home/chefadmin/chefadmin.pem
