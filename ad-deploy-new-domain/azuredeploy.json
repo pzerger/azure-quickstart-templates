@@ -186,7 +186,7 @@
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "http://contosoazure.blob.core.windows.net/scripts/Install-AD-Mgmt-Tools.ps1",
-        "installChefServerScriptUri": "http://contosoazure.blob.core.windows.net/scripts/install_chef_server.sh",
+        "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "Install-AD-Mgmt-Tools.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
@@ -495,8 +495,10 @@
                         "type": "CustomScriptForLinux",
                         "typeHandlerVersion": "1.2",
                         "settings": {
-                            "fileUris": [ "[variables('installChefServerScriptUri')]" ],
-                            "commandToExecute": "[concat('sh ', variables('installChefServerScriptName'))]"
+                            "fileUris": [
+                                "[concat(variables('installChefServerScriptUri'))]"
+                            ],
+                            "commandToExecute": "[concat('bash install_chef_server.sh')]"
                         }
                     }
                 }
