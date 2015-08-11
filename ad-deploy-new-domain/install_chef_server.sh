@@ -28,8 +28,13 @@ while getopts ":u:p:v:h" optname; do
   esac
 done
 
+# Updating the Chef Server Hosts File
+sudo sed -i "2i10.0.2.4 CHEFSRV.contoso.corp CHEFSRV" /etc/hosts
 
-# Retrieving the Chef Server 12 Binaries.
+# Printing out the correct FQDN of the Server
+hostname -f
+
+# Retrieving the Chef Server 12 Binaries
 sudo wget https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-server-core_12.1.0-1_amd64.deb
 
 # Installing Chef Server 12
@@ -62,7 +67,7 @@ sudo chef-server-ctl install opscode-reporting
 # Running the Reporting Initial Configuration and then Running the Chef Server Configuration
 sudo chef-server-ctl reconfigure ; sudo opscode-reporting-ctl reconfigure
 
-# Copying the Chef Server Certificate to the chefadmin home directory for further use.
+# Copying the Chef Server Certificate to the chefadmin home directory for further use
 sudo cp /var/opt/opscode/nginx/ca/CHEFSRV.contoso.corp.crt /home/chefadmin/
 
 echo "Chef Server 12 Installation is Complete!"
