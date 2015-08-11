@@ -185,7 +185,7 @@
         "ciresonchefsrvpubipName": "[parameters('ciresonchefsrvpubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
-        "installADToolsScriptUri": "http://contosoazure.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
+        "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
