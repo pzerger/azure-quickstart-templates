@@ -53,7 +53,8 @@ sudo chef-server-ctl org-create learn_chef_12_env Learn Chef 12 Environment --as
 sudo chef-server-ctl install opscode-manage
 
 # Running the Web UI Initial Configuration and then Running the Chef Server Configuration
-sudo chef-server-ctl reconfigure ; sudo opscode-manage-ctl reconfigure
+sudo chef-server-ctl reconfigure
+sudo opscode-manage-ctl reconfigure
 
 # Installing the Chef Push Jobs Feature
 sudo chef-server-ctl install opscode-push-jobs-server
@@ -65,7 +66,8 @@ sudo chef-server-ctl reconfigure
 sudo chef-server-ctl install opscode-reporting
 
 # Running the Reporting Initial Configuration and then Running the Chef Server Configuration
-sudo chef-server-ctl reconfigure ; sudo opscode-reporting-ctl reconfigure
+sudo chef-server-ctl reconfigure
+sudo opscode-reporting-ctl reconfigure
 
 # Copying the Chef Server Certificate to the chefadmin home directory for further use
 sudo cp /var/opt/opscode/nginx/ca/CHEFSRV.contoso.corp.crt /home/chefadmin/
