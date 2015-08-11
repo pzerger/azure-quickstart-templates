@@ -2,7 +2,7 @@
 
 # Input Argument Variables
 CHEF_USERNAME="chefadmin"
-CHEF_PASSOWRD="LearnChef!"
+CHEF_PASSWORD="LearnChef!"
 
 
 # Parse Script Parameters
@@ -29,37 +29,40 @@ while getopts ":u:p:v:h" optname; do
 done
 
 
-# Retrieving the Chef Server 12 Binaries
-wget https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-server-core_12.1.0-1_amd64.deb
+# Retrieving the Chef Server 12 Binaries.
+sudo wget https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-server-core_12.1.0-1_amd64.deb
 
 # Installing Chef Server 12
-dpkg -i chef-server-core_12.1.0-1_amd64.deb
+sudo dpkg -i chef-server-core_12.1.0-1_amd64.deb
 
 # Running the Chef Server Initial Configuration
-chef-server-ctl reconfigure
+sudo chef-server-ctl reconfigure
 
 # Creating First User on the Chef Server
-chef-server-ctl user-create $CHEF_USERNAME Chef Admin chefadmin@devops.io $CHEF_PASSWORD --filename /home/chefadmin/chefadmin.pem
+sudo chef-server-ctl user-create $CHEF_USERNAME Chef Admin chefadmin@devops.io $CHEF_PASSWORD --filename /home/chefadmin/chefadmin.pem
 
 # Creating the First Organization on the Chef Server
-chef-server-ctl org-create learn_chef_12_env Learn Chef 12 Environment --association_user $CHEF_USERNAME --filename /home/chefadmin/learn_chef_12_env.pem
+sudo chef-server-ctl org-create learn_chef_12_env Learn Chef 12 Environment --association_user $CHEF_USERNAME --filename /home/chefadmin/learn_chef_12_env.pem
 
 # Installing the the Chef Management Web UI
-chef-server-ctl install opscode-manage
+sudo chef-server-ctl install opscode-manage
 
 # Running the Web UI Initial Configuration and then Running the Chef Server Configuration
-opscode-manage-ctl reconfigure ; chef-server-ctl reconfigure
+sudo chef-server-ctl reconfigure ; sudo opscode-manage-ctl reconfigure
 
 # Installing the Chef Push Jobs Feature
-chef-server-ctl install opscode-push-jobs-server
+sudo chef-server-ctl install opscode-push-jobs-server
 
 # Running the Chef Server Configuration
-chef-server-ctl reconfigure
+sudo chef-server-ctl reconfigure
 
 # Installing the Chef Server Reporting Feature
-chef-server-ctl install opscode-reporting
+sudo chef-server-ctl install opscode-reporting
 
 # Running the Reporting Initial Configuration and then Running the Chef Server Configuration
-opscode-reporting-ctl reconfigure ; chef-server-ctl reconfigure
+sudo chef-server-ctl reconfigure ; sudo opscode-reporting-ctl reconfigure
 
-echo "Chef Server 12 Installation from Custom Script is Complete!"
+# Copying the Chef Server Certificate to the chefadmin home directory for further use.
+sudo cp /var/opt/opscode/nginx/ca/CHEFSRV.contoso.corp.crt /home/chefadmin/
+
+echo "Chef Server 12 Installation is Complete!"
