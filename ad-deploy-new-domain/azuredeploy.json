@@ -480,29 +480,7 @@
                         }
                     ]
                 }
-            },
-            "resources": [
-                {
-                    "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(parameters('CHEFSRVName'), '/' ,'installchefserverscript')]",
-                    "apiVersion": "2015-05-01-preview",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                        "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFSRVName'))]"
-                    ],
-                    "properties": {
-                        "publisher": "Microsoft.OSTCExtensions",
-                        "type": "CustomScriptForLinux",
-                        "typeHandlerVersion": "1.2",
-                        "settings": {
-                            "fileUris": [
-                                "[concat(variables('installChefServerScriptUri'))]"
-                            ],
-                            "commandToExecute": "[concat('bash install_chef_server.sh')]"
-                        }
-                    }
-                }
-            ]
+            }
         },
         {
             "name": "UpdateVNetDNS",
