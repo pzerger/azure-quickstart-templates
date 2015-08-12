@@ -43,12 +43,6 @@ sudo dpkg -i chef-server-core_12.1.0-1_amd64.deb
 # Running the Chef Server Initial Configuration
 sudo chef-server-ctl reconfigure
 
-# Creating First User on the Chef Server
-sudo chef-server-ctl user-create $CHEF_USERNAME Chef Admin chefadmin@devops.io $CHEF_PASSWORD --filename /home/chefadmin/chefadmin.pem
-
-# Creating the First Organization on the Chef Server
-sudo chef-server-ctl org-create learn_chef_12_env Learn Chef 12 Environment --association_user $CHEF_USERNAME --filename /home/chefadmin/learn_chef_12_env.pem
-
 # Installing the the Chef Management Web UI
 sudo chef-server-ctl install opscode-manage
 
@@ -71,5 +65,11 @@ sudo opscode-reporting-ctl reconfigure
 
 # Copying the Chef Server Certificate to the chefadmin home directory for further use
 sudo cp /var/opt/opscode/nginx/ca/CHEFSRV.contoso.corp.crt /home/chefadmin/
+
+# Creating First User on the Chef Server
+sudo chef-server-ctl user-create $CHEF_USERNAME Chef Admin chefadmin@devops.io $CHEF_PASSWORD --filename /home/chefadmin/chefadmin.pem
+
+# Creating the First Organization on the Chef Server
+sudo chef-server-ctl org-create learn_chef_12_env Learn Chef 12 Environment --association_user $CHEF_USERNAME --filename /home/chefadmin/learn_chef_12_env.pem
 
 echo "Chef Server 12 Installation is Complete!"
