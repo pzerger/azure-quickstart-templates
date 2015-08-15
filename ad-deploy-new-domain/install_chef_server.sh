@@ -58,7 +58,7 @@ sudo chef-server-ctl install opscode-push-jobs-server
 
 # Running the Chef Server Configuration
 sudo chef-server-ctl reconfigure
-
+sleep 1m
 # Installing the Chef Server Reporting Feature
 sudo chef-server-ctl install opscode-reporting
 
@@ -66,6 +66,7 @@ sudo chef-server-ctl install opscode-reporting
 sudo chef-server-ctl reconfigure
 sleep 1m
 sudo opscode-reporting-ctl reconfigure
+sleep 1m
 
 # Copying the Chef Server Certificate to the chefadmin home directory for further use
 sudo cp /var/opt/opscode/nginx/ca/CHEFSRV.contoso.corp.crt /home/chefadmin/

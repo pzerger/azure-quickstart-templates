@@ -171,7 +171,7 @@
         "ADDCOSDiskName": "ADDCOSDisk",
         "CHEFSRVOSDiskName": "CHEFSRVOSDisk",
         "ADDCVmSize": "Standard_D2",
-        "CHEFSRVVmSize": "Standard_D3",
+        "CHEFSRVVmSize": "Standard_D2",
         "ADDCVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'ContosoNET')]",
         "ADDCSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DCSubnet')]",
         "ChefSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'ChefSubnet')]",
