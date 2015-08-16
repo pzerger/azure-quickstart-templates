@@ -666,7 +666,7 @@
                     "type": "DSC",
                     "typeHandlerVersion": "1.9",
                     "settings": {
-                        "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
+                        "ModulesUrl": "[concat(parameters('AssetLocation'),'/Configuration.zip')]",
                         "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
                         "Properties": {
                             "DomainName": "[parameters('AdDomainNameFQDN')]",
