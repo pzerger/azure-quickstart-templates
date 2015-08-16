@@ -3,7 +3,8 @@
 - Disables IE ESC for Administrators
 - Adds a DNS Record for the Chef Server in AD
 - WinRM Unencrypted Traffic Enabled
-- The Directory C:\chef\trusted_certs is created
+- The Directory 'C:\chef\trusted_certs' is created
+- Retrieval and Saving of the Chef Server SSL Certificate to 'C:\chef\trusted_certs'
 - File is created in C:\Windows\Temp stating whether these actions were successful or not.
 #>
 
@@ -54,6 +55,37 @@ If (!$?)
 		$ADToolsInstallComplete = [System.IO.File]::Create("C:\Windows\Temp\Create_Chef_Directories_Failed.txt").Close()
 	}
 
+# Retrieving and saving the Chef Server's SSL Certificate to 'C:\chef\trusted_certs\'
+$URI        = "https://chefsrv.contoso.corp"
+$WebRequest = [System.Net.HttpWebRequest]::Create($URI)
 
-	
+try {
+        $WebRequest.GetResponse().Dispose()
+    }
+catch [System.Net.WebException]
+    {
+        if ($_.Exception.Status -eq [System.Net.WebExceptionStatus]::TrustFailure)
+            {
+				$RetrievingChefServerCert = [System.IO.File]::Create("C:\Windows\Temp\Retrieval_of_Chef_Server_SSL_Certificate_Successful.txt").Close()  
+            }
+        else 
+            {
+				$RetrievingChefServerCert = [System.IO.File]::Create("C:\Windows\Temp\Retrieval_of_Chef_Server_SSL_Certificate_Failed.txt").Close()
+            }
+    }
+
+$Cert  = $WebRequest.ServicePoint.Certificate
+$Bytes = $Cert.Export([Security.Cryptography.X509Certificates.X509ContentType]::Cert)
+
+Set-Content -Value $Bytes -Encoding Byte -Path "C:\chef\trusted_certs\CHEFSRV.contoso.corp.cer"
+
+If ($?)
+	{
+		$SavingChefServerCert = [System.IO.File]::Create("C:\Windows\Temp\Saving_of_Chef_Server_SSL_Cert_Successful.txt").Close()
+	}	
+If (!$?)
+	{
+		$SavingChefServerCert = [System.IO.File]::Create("C:\Windows\Temp\Saving_of_Chef_Server_SSL_Cert_Failed.txt").Close()
+	}
+
 	
