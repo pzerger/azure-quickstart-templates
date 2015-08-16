@@ -53,4 +53,30 @@ If (!$?)
 	{
 		$ADToolsInstallComplete = [System.IO.File]::Create("C:\Windows\Temp\Create_Chef_Directories_Failed.txt").Close()
 	}
-	
+
+# Setting IE HomePage to Chef Server Web URL
+$ChefSrvURL = "https://chefsrv.contoso.corp"
+
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main\" -Name "Start Page" -Value $ChefSrvURL
+
+If ($?)
+	{
+		$IEHomePageSet = [System.IO.File]::Create("C:\Windows\Temp\IE_HomePage_Set_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		$IEHomePageSet = [System.IO.File]::Create("C:\Windows\Temp\IE_HomePage_Set_Failed.txt").Close()
+	}
+
+
+# Changing IE Settings to Allow File Downloads.
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" -Name "1803" -Value 0 -Type DWORD -Force
+
+If ($?)
+	{
+		$IEFileDownloadsSet = [System.IO.File]::Create("C:\Windows\Temp\IE_Allow_File_Downloads_Set_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		$IEFileDownloadsSet = [System.IO.File]::Create("C:\Windows\Temp\IE_Allow_File_Downloads_Set_Failed.txt").Close()
+	}
