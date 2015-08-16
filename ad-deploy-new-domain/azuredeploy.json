@@ -654,7 +654,7 @@
             "resources": [
                 {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "CHEFWINWKS/domainjoin",
+            "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'domainjoin')]",
             "apiVersion": "2015-05-01-preview",
             "location": "[resourceGroup().location]",
             "dependsOn": [
