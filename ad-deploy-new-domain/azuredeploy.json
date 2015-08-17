@@ -231,8 +231,10 @@
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
+        "joinHostToDomainScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/Join-Host-To-Domain.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
+        "joinHostToDomainScriptName": "Join-Host-To-Domain.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
     "resources": [
@@ -653,34 +655,22 @@
             },
             "resources": [
                 {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'domainjoin')]",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINWKSName'))]",
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                "Microsoft.Resources/deployments/UpdateVNetDNS"
-                ],
-                "properties": {
-                    "publisher": "Microsoft.Powershell",
-                    "type": "DSC",
-                    "typeHandlerVersion": "1.9",
-                    "settings": {
-                        "ModulesUrl": "[concat(parameters('AssetLocation'),'/Configuration.zip')]",
-                        "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
-                        "Properties": {
-                            "DomainName": "[parameters('AdDomainNameFQDN')]",
-                            "AdminCreds": {
-                                "UserName": "[parameters('ADDCAdminUserName')]",
-                                "Password": "PrivateSettingsRef:adminPassword"
-                            }
-                        }
-                    },
-                    "protectedSettings": {
-                        "Items": {
-                            "adminPassword": "[parameters('CHEFWINWKSAdminPassword')]"
-                            }
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'JoinHostToDomain')]",
+                    "apiVersion": "2015-05-01-preview",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINWKSName'))]",
+                        "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
+                        "Microsoft.Resources/deployments/UpdateVNetDNS"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Compute",
+                        "type": "CustomScriptExtension",
+                        "typeHandlerVersion": "1.2",
+                        "settings": {
+                            "fileUris": [ "[variables('joinHostToDomainScriptUri')]" ],
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('joinHostToDomainScriptName'))]"
                         }
                     }
                 }
