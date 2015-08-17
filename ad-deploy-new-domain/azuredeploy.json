@@ -656,21 +656,33 @@
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'JoinHostToDomain')]",
+                    "name": "[concat(parameters('CHEFWINWKSName'),'/domainjoin')]",
                     "apiVersion": "2015-05-01-preview",
-                    "location": "[parameters('location')]",
+                    "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINWKSName'))]",
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                        "Microsoft.Resources/deployments/UpdateVNetDNS"
+                        "Microsoft.Resources/deployments/UpdateChefVNetDNS"
                     ],
                     "properties": {
-                        "publisher": "Microsoft.Compute",
-                        "type": "CustomScriptExtension",
-                        "typeHandlerVersion": "1.2",
+                        "publisher": "Microsoft.Powershell",
+                        "type": "DSC",
+                        "typeHandlerVersion": "1.9",
                         "settings": {
-                            "fileUris": [ "[variables('joinHostToDomainScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('joinHostToDomainScriptName'))]"
+                            "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
+                            "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
+                            "Properties": {
+                                "DomainName": "[parameters('AdDomainNameFQDN')]",
+                                "AdminCreds": {
+                                    "UserName": "[parameters('ADDCAdminUserName')]",
+                                    "Password": "PrivateSettingsRef:adminPassword"
+                                }
+                            }
+                        },
+                        "protectedSettings": {
+                            "Items": {
+                            "adminPassword": "[parameters('CHEFWINWKSAdminPassword')]"
+                            }
                         }
                     }
                 }
@@ -703,7 +715,44 @@
                         "value": "DCSubnet"
                     },
                     "subnetRange": {
-                        "value": "[parameters('DCSubnetPrefix')]"
+                        "value": "[parameters('DCsubnetPrefix')]"
+                    },
+                    "DNSServerAddress": {
+                        "value": [
+                            "[parameters('adNicIPAddress')]"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateChefVNetDNS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('vnetwithDNSTemplateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "virtualNetworkName": {
+                        "value": "ContosoNET"
+                    },
+                    "virtualNetworkAddressRange": {
+                        "value": "[parameters('addressPrefix')]"
+                    },
+                    "subnetName": {
+                        "value": "ChefSubnet"
+                    },
+                    "subnetRange": {
+                        "value": "[parameters('ChefsubnetPrefix')]"
                     },
                     "DNSServerAddress": {
                         "value": [
