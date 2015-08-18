@@ -666,13 +666,11 @@
                     "resources": [
                         {
                             "type": "Microsoft.Compute/virtualMachines/extensions",
-                            "name": "CHEFWINWKS/domainjoin",
+                            "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'DomainJoin')]",
                             "apiVersion": "2015-05-01-preview",
                             "location": "[resourceGroup().location]",
                             "dependsOn": [
-                                "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINWKSName'))]",
-                                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                                "Microsoft.Resources/deployments/UpdateDCVNetDNS"
+                                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]"
                             ],
                             "properties": {
                                 "publisher": "Microsoft.Powershell",
