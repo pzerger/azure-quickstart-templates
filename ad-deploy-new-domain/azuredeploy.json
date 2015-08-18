@@ -32,13 +32,6 @@
                 "Description": "Chef Subnet Prefix"
             }
         },
-        "SQLsubnetPrefix": {
-            "type": "string",
-            "defaultValue": "10.0.3.0/24",
-            "metadata": {
-                "Description": "SQL Subnet Prefix"
-            }
-        },
         "contososysctrappName": {
             "type": "string",
             "defaultValue": "contososysctrapp"
@@ -231,10 +224,10 @@
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
-        "joinHostToDomainScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/Join-Host-To-Domain.ps1",
+        "CHEFWINWKSCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINWKS-Custom-Configs.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
-        "joinHostToDomainScriptName": "Join-Host-To-Domain.ps1",
+        "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
     "resources": [
@@ -260,12 +253,6 @@
                         "name": "ChefSubnet",
                         "properties": {
                             "addressPrefix": "[parameters('ChefsubnetPrefix')]"
-                        }
-                    },
-                    {
-                        "name": "SQLSubnet",
-                        "properties": {
-                            "addressPrefix": "[parameters('SQLsubnetPrefix')]"
                         }
                     }
                 ]
@@ -369,7 +356,11 @@
                             }
                         }
                     }
-                ]
+                ],
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('ADdomainNameFQDN')]",
+                    "dnsServers": [ "[parameters('adNicIPAddress')]" ]
+                }
             }
         },
         {
@@ -508,7 +499,7 @@
                     "resources": [
                         {
                             "type": "Microsoft.Compute/virtualMachines/extensions",
-                            "name": "[concat(parameters('ADDCName'), '/' ,'CustomScriptExtension')]",
+                            "name": "[concat(parameters('ADDCName'), '/' ,'ADDCCustomConfigsScript')]",
                             "apiVersion": "2015-05-01-preview",
                             "location": "[parameters('location')]",
                             "dependsOn": [
@@ -656,7 +647,7 @@
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'CustomScriptExtension')]",
+                    "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'CHEFWINWKSCustomConfigsScript')]",
                     "apiVersion": "2015-05-01-preview",
                     "location": "[parameters('location')]",
                     "dependsOn": [
@@ -668,8 +659,8 @@
                         "type": "CustomScriptExtension",
                         "typeHandlerVersion": "1.2",
                         "settings": {
-                            "fileUris": [ "[variables('installADToolsScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('installADToolsScriptName'))]"
+                            "fileUris": [ "[variables('CHEFWINWKSCustomConfigsScriptUri')]" ],
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINWKSCustomConfigsScriptName'))]"
                         }
                     }
                 }
@@ -703,43 +694,6 @@
                     },
                     "subnetRange": {
                         "value": "[parameters('DCsubnetPrefix')]"
-                    },
-                    "DNSServerAddress": {
-                        "value": [
-                            "[parameters('adNicIPAddress')]"
-                        ]
-                    }
-                }
-            }
-        },
-        {
-            "name": "UpdateChefVNetDNS",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2015-01-01",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('vnetwithDNSTemplateUri')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "location": {
-                        "value": "[parameters('location')]"
-                    },
-                    "virtualNetworkName": {
-                        "value": "ContosoNET"
-                    },
-                    "virtualNetworkAddressRange": {
-                        "value": "[parameters('addressPrefix')]"
-                    },
-                    "subnetName": {
-                        "value": "ChefSubnet"
-                    },
-                    "subnetRange": {
-                        "value": "[parameters('ChefsubnetPrefix')]"
                     },
                     "DNSServerAddress": {
                         "value": [
