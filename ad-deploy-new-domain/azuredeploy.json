@@ -672,7 +672,7 @@
                             "dependsOn": [
                                 "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]",
                                 "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
-                                "Microsoft.Resources/deployments/UpdateVNetDNS"
+                                "Microsoft.Resources/deployments/UpdateDCVNetDNS"
                             ],
                             "properties": {
                                 "publisher": "Microsoft.Powershell",
