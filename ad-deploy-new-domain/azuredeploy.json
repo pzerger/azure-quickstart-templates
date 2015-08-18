@@ -656,7 +656,7 @@
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(parameters('ADDCName'), '/' ,'CustomScriptExtension')]",
+                    "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'CustomScriptExtension')]",
                     "apiVersion": "2015-05-01-preview",
                     "location": "[parameters('location')]",
                     "dependsOn": [
