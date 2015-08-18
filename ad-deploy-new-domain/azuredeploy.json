@@ -670,7 +670,9 @@
                             "apiVersion": "2015-05-01-preview",
                             "location": "[resourceGroup().location]",
                             "dependsOn": [
-                                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]"
+                                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]",
+                                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
+                                "Microsoft.Resources/deployments/UpdateVNetDNS"
                             ],
                             "properties": {
                                 "publisher": "Microsoft.Powershell",
