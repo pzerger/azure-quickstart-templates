@@ -1,14 +1,15 @@
 <# This Script does the following:
-- Installs AD and DNS Management Tools
-- Disables IE ESC for Administrators
-- WinRM Unencrypted Traffic Enabled
-- Creates 'C:\Chef\trusted_certs' directory for the Chef Client
+- Installs AD and DNS Management Tools.
+- Disables IE ESC for Administrators.
+- WinRM Unencrypted Traffic Enabled.
+- Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - Creates 'chef-repo' and 'cookbooks' Directory for ChefDK.
-- Creates '.chef' and 'trusted_certs' Directories for ChefDK
-- Retrieves and saves the Chef Server's SSL Certificate to 'C:\chef\trusted_certs\'
-- Downloads and Installs ChefDK
+- Creates '.chef' and 'trusted_certs' Directories for ChefDK.
+- Downloads and Installs ChefDK.
 - Download the 'knife.rb' for this Environment from GitHub.
-- Downloads and Installs Notepad++
+- Downloads and Installs Notepad++.
+- Retrieves the Chef Server SSL Certificate using knife.
+- Copies the Chef Server Certificate to the the Chef Client 'trusted_certs' directory.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
 
@@ -86,39 +87,6 @@ If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_Create_ChekDK_Certs_Directories_Failed.txt").Close()
 	}	
-	
-# Retrieving and saving the Chef Server's SSL Certificate to 'C:\chef\trusted_certs\'
-$URI        = "https://chefsrv.contoso.corp"
-$WebRequest = [System.Net.HttpWebRequest]::Create($URI)
-
-try {
-        $WebRequest.GetResponse().Dispose()
-    }
-catch [System.Net.WebException]
-    {
-        if ($_.Exception.Status -eq [System.Net.WebExceptionStatus]::TrustFailure)
-            {
-				[System.IO.File]::Create("C:\Windows\Temp\_Retrieval_of_Chef_Server_SSL_Certificate_Successful.txt").Close()  
-            }
-        else 
-            {
-				[System.IO.File]::Create("C:\Windows\Temp\_Retrieval_of_Chef_Server_SSL_Certificate_Failed.txt").Close()
-            }
-    }
-
-$Cert  = $WebRequest.ServicePoint.Certificate
-$Bytes = $Cert.Export([Security.Cryptography.X509Certificates.X509ContentType]::Cert)
-
-Set-Content -Value $Bytes -Encoding Byte -Path "C:\chef\trusted_certs\CHEFSRV.contoso.corp.crt"
-
-If ($?)
-	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Saving_of_Chef_Server_SSL_Cert_Successful.txt").Close()
-	}	
-If (!$?)
-	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Saving_of_Chef_Server_SSL_Cert_Failed.txt").Close()
-	}
 
 # Download Chef DK Kit
 $ChefDK_WebClient = New-Object System.Net.WebClient
@@ -188,3 +156,29 @@ If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Install_Failed.txt").Close()
 	}
+
+# Retrieving the Chef Server SSL Certificate using knife.
+cd "C:\chef\.chef"
+knife ssl fetch
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieved_Successfully.txt").Close()
+	}	
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieval_Failed.txt").Close()
+	}
+
+# Copying the Chef Server Certificate to the the Chef Client 'trusted_certs' directory
+cp "C:\chef\.chef\trusted_certs\*" "C:\chef\trusted_certs\"
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Successfully.txt").Close()
+	}	
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Failed.txt").Close()
+	}
+
