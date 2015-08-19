@@ -225,9 +225,11 @@
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINWKS-Custom-Configs.ps1",
+        "ChefServerSSLCertFetchScriptUri" : "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINWKS-Chef-Server-SSL-Fetch.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
+        "ChefServerSSLCertFetchScriptName": "CHEFWINWKS-Chef-Server-SSL-Fetch.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
     "resources": [
@@ -662,7 +664,27 @@
                             "fileUris": [ "[variables('CHEFWINWKSCustomConfigsScriptUri')]" ],
                             "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINWKSCustomConfigsScriptName'))]"
                         }
-                    }
+                    },
+                    "resources": [
+                        {
+                            "type": "Microsoft.Compute/virtualMachines/extensions",
+                            "name": "[concat(parameters('CHEFWINWKSName'), '/' ,'ChefServerSSLCertFetchScript')]",
+                            "apiVersion": "2015-05-01-preview",
+                            "location": "[parameters('location')]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]"
+                            ],
+                            "properties": {
+                                "publisher": "Microsoft.Compute",
+                                "type": "CustomScriptExtension",
+                                "typeHandlerVersion": "1.2",
+                                "settings": {
+                                    "fileUris": [ "[variables('ChefServerSSLCertFetchScriptUri')]" ],
+                                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('ChefServerSSLCertFetchScriptName'))]"
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         },
