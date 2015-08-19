@@ -84,4 +84,19 @@ If (!$?)
 		$SavingChefServerCert = [System.IO.File]::Create("C:\Windows\Temp\Saving_of_Chef_Server_SSL_Cert_Failed.txt").Close()
 	}
 
+# Download Chef DK Kit
+$WebClient = New-Object System.Net.WebClient
+$URI       = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chefdk-0.7.0-1.msi"
+$File      = "C:\Windows\Temp\chefdk-0.7.0-1.msi"
+
+$WebClient.DownloadFile($URI,$File)
+
+# Install the Chef DK Kit
+msiexec.exe /i C:\Windows\Temp\chefdk-0.7.0-1.msi /quiet /norestart
+
+
+
+
+
+
 	
