@@ -7,6 +7,7 @@
 - Creates '.chef' and 'trusted_certs' Directories for ChefDK
 - Retrieves and saves the Chef Server's SSL Certificate to 'C:\chef\trusted_certs\'
 - Downloads and Installs ChefDK
+- Download the 'knife.rb' for this Environment from GitHub.
 - Downloads and Installs Notepad++
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
@@ -144,6 +145,21 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_ChefDK_Install_Failed.txt").Close()
+	}
+
+# Download the 'knife.rb' for this Environment from GitHub
+$ChefKnifeConfig_WebClient = New-Object System.Net.WebClient
+$ChefKnifeConfig_URI       = "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/knife.rb"
+$ChefKnifeConfig_File      = "C:\chef\.chef\knife.rb"
+$ChefKnifeConfig_WebClient.DownloadFile($ChefKnifeConfig_URI,$ChefKnifeConfig_File)
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_knife.rb_Downloaded_Successfully.txt").Close()
+	}	
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_knife.rb_Download_Failed.txt").Close()
 	}
 
 # Download Notepad++
