@@ -8,6 +8,8 @@
 - Downloads and Installs ChefDK.
 - Download the 'knife.rb' for this Environment from GitHub.
 - Downloads and Installs Notepad++.
+- Retrieves the Chef Server SSL Certificate using knife.
+- Copies the Chef Server Certificate to the the Chef Client 'trusted_certs' directory.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
 
@@ -23,7 +25,6 @@ If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_AD_Tools_Install_Complete.txt").Close()
 	}
-
 
 # Disabling IE ESC for Administrators on Target Host. UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
 $Disable_IE_ESC_Admins = New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name IsInstalled -Value 0 -Force
@@ -153,4 +154,32 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Install_Failed.txt").Close()
+	}
+
+# Pausing Script for 5 Minutes and then continuing
+Start-Sleep -s 300
+	
+# Retrieving the Chef Server SSL Certificate using knife
+cd "C:\chef\.chef"
+knife ssl fetch
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieved_Successfully.txt").Close()
+	}	
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieval_Failed.txt").Close()
+	}
+
+# Copying the Chef Server Certificate to the the Chef Client 'trusted_certs' directory
+cp "C:\chef\.chef\trusted_certs\*" "C:\chef\trusted_certs\"
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Successfully.txt").Close()
+	}	
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Failed.txt").Close()
 	}
