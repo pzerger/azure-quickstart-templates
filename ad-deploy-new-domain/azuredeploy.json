@@ -129,23 +129,23 @@
                 "Windows-Server-Technical-Preview"
             ]
         },
-        "ciresonadpubipDnsName": {
+        "adpubipDnsName": {
             "type": "string",
-            "defaultValue": "ciresonadsrv",
+            "defaultValue": "adsrv",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the AD VM."
             }
         },
-        "ciresonchefsrvpubipDnsName": {
+        "chefsrvpubipDnsName": {
             "type": "string",
-            "defaultValue": "ciresonchefsrv",
+            "defaultValue": "chefsrv",
             "metadata": {
                 "description": "The is the FQDN for SSH Access into the Chef Server."
             }
         },
-        "ciresonchefwinwkspubipDnsName": {
+        "chefwinwkspubipDnsName": {
             "type": "string",
-            "defaultValue": "ciresonchefwinwks",
+            "defaultValue": "chefwinwks",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the Chef Windows Workstation VM."
             }
@@ -218,9 +218,9 @@
         "CHEFWINWKSNicName": "[concat(parameters('CHEFWINWKSName'), 'NetworkInterface')]",
         "adModulesURL": "[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
         "adConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
-        "ciresonadpubipName": "[parameters('ciresonadpubipDnsName')]",
-        "ciresonchefsrvpubipName": "[parameters('ciresonchefsrvpubipDnsName')]",
-        "ciresonchefwinwkspubipName": "[parameters('ciresonchefwinwkspubipDnsName')]",
+        "adpubipName": "[parameters('adpubipDnsName')]",
+        "chefsrvpubipName": "[parameters('chefsrvpubipDnsName')]",
+        "chefwinwkspubipName": "[parameters('chefwinwkspubipDnsName')]",
         "vnetTemplateUri": "[concat(parameters('AssetLocation'),'/vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
         "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
@@ -278,7 +278,7 @@
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', 'ContosoNET')]",
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonadpubipName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('adpubipName'))]"
             ],
             "tags": {
                 "displayName": "ADDCNic"
@@ -293,7 +293,7 @@
                                 "id": "[variables('ADDCSubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonadpubipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('adpubipName'))]"
                             }
                         }
                     }
@@ -307,7 +307,7 @@
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', 'ContosoNET')]",
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonchefsrvpubipName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('chefsrvpubipName'))]"
             ],
             "tags": {
                 "displayName": "CHEFSRVNic"
@@ -322,7 +322,7 @@
                                 "id": "[variables('ChefSubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonchefsrvpubipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('chefsrvpubipName'))]"
                             }
                         }
                     }
@@ -336,7 +336,7 @@
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', 'ContosoNET')]",
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('ciresonchefwinwkspubipName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('chefwinwkspubipName'))]"
             ],
             "tags": {
                 "displayName": "CHEFWINWKSNic"
@@ -352,7 +352,7 @@
                                 "id": "[variables('ChefSubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ciresonchefwinwkspubipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('chefwinwkspubipName'))]"
                             }
                         }
                     }
@@ -364,48 +364,48 @@
             }
         },
         {
-            "name": "[variables('ciresonadpubipName')]",
+            "name": "[variables('adpubipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [ ],
             "tags": {
-                "displayName": "ciresonadpubip"
+                "displayName": "adpubip"
             },
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('ciresonadpubipName')]"
+                    "domainNameLabel": "[variables('adpubipName')]"
                 }
             }
         },
         {
-            "name": "[variables('ciresonchefsrvpubipName')]",
+            "name": "[variables('chefsrvpubipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "tags": {
-                "displayName": "ciresonchefsrvpubip"
+                "displayName": "chefsrvpubip"
             },
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('ciresonchefsrvpubipName')]"
+                    "domainNameLabel": "[variables('chefsrvpubipName')]"
                 }
             }
         },
         {
-            "name": "[variables('ciresonchefwinwkspubipName')]",
+            "name": "[variables('chefwinwkspubipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "tags": {
-                "displayName": "ciresonchefwinwkspubip"
+                "displayName": "chefwinwkspubip"
             },
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('ciresonchefwinwkspubipName')]"
+                    "domainNameLabel": "[variables('chefwinwkspubipName')]"
                 }
             }
         },
