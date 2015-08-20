@@ -1,7 +1,7 @@
 <# This Script does the following:
 - Installs AD and DNS Management Tools.
 - Disables IE ESC for Administrators.
-- WinRM Unencrypted Traffic Enabled.
+- Sets WinRM Unencrypted Traffic to enabled and Authentication to Basic.
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - Creates 'chef-repo' and 'cookbooks' Directory for ChefDK.
 - Creates '.chef' and 'trusted_certs' Directories for ChefDK.
@@ -39,7 +39,7 @@ if ($Disable_IE_ESC_Admins.IsInstalled -ne 0)
 		[System.IO.File]::Create("C:\Windows\Temp\_IE_ESC_For_Admins_Disabled_Failed.txt").Close()
 	}
 
-# Setting WinRM to allow Unencrypted traffic
+# Setting WinRM to allow Unencrypted traffic and setting Authentication to Basic
 $AllowUnencrypted = winrm set winrm/config/service '@{AllowUnencrypted="true"}'
 
 If ($?)
@@ -49,6 +49,17 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Unencrypted_Enabled_Failed.txt").Close()
+	}
+
+$AllowBasicAuth = winrm set winrm/config/service/auth '@{Basic="true"}'
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Basic_Auth_Enabled_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Basic_Auth_Enabled_Failed.txt").Close()
 	}
 
 # Creating 'C:\Chef\trusted_certs' directory for the Chef Client.
