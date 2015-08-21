@@ -7,13 +7,14 @@
 
 This template provisions an environment in Azure for learning Chef.
  
- The following resources are part of this deployment:
+ The following VMs are deployed with their own publicly accessible FQDN's for RDP and SSH Access respectively.
  - Ubuntu Server 14.04 running Chef Server 12
  - Windows Server 2012 R2 running as a Domain Controller
  - Windows Server 2012 R2 non-domain-joined with ChefDK Installed
  - Windows Server 2012 R2 non-domain-joined for use as a Sandbox
 
-All of the Servers deployed in this template are **Standard_D2** to ensure the deployment takes less than 40 minutes. It is possible to deploy smaller VMs using this Template; however **all size possibilities have not been tested!**
+All of the VMs deployed in this template are **Standard_D2** to ensure the deployment takes less than 40 minutes. It is possible to deploy smaller VMs using this Template; however **all size possibilities have not been tested!**
+
 
 
 This template requires the following parameters which are preconfigured:
