@@ -18,7 +18,27 @@ This template requires the following parameters which are preconfigured:
 
 | Name             | Description                     |
 |:-----------------| :--------------------------------|
-| location | Location name where the corresponding Azure artifacts will be created |
+| LOCATION | Location name where the corresponding Azure artifacts will be created |
+| ADDRESSPREFIX | Default Address Prefix for the entire Environment |
+| DCSUBNETPREFIX | Address Prefix for Hosts in the same Subnet as the Domain Controller |
+| CHEFSUBNETPREFIX | Address Prefix for Hosts in the same Subnet as the Chef Server |
+| CONTOSOSYSCTRAPPTYPE | More on this later |
+| CONTOSOSYSCTRAPPLOCATION | Physical Location where the Environment will be deployed |
+| ADDCNAME | Name of the Domain Controller |
+| CHEFSRVNAME | Name of the Chef Server |
+| CHEFWINWKSNAME | Name of the Chef Windows Workstation |
+| ADDCADMINUSERNAME | Admin Username of the Domain Controller |
+| CHEFSRVADMINUSERNAME | Admin Username of the Chef Server |
+| CHEFWINWKSADMINUSERNAME | Admin Username of the Chef Windows Workstation |
+| ADDCADMINPASSWORD | Admin Password of the Domain Controller |
+| CHEFSRVADMINPASSWORD | Admin Password of the Chef Server |
+| CHEFWINWKSADMINPASSWORD | Admin Password of the Chef Windows Workstation |
+| ADDCWINDOWSOSVERSION | Windows OS Version that the Domain Controller is running |
+| UBUNTUOSVERSION | Ubuntu OS Version that the Chef Server is running |
+| CHEFWINWKSWINDOWSOSVERSION | Windows OS Version that the Chef Windows Workstation is running |
+| ADPUBIPDNSNAME | Publicly accessible FQDN associated with the Domain Controller |
+| CHEFSRVPUBIPDNSNAME | Publicly accessible FQDN associated with the Chef Server |
+| CHEFWINWKSPUBIPDNSNAME | Publicly accessible FQDN associated with the Chef Windows Workstation |
 | storage account  | Unique  Name for the Storage Account where the Virtual Machine's disks will be placed |
 | dnsName | DNS name for the VM |
 | adminUsername  | Admin user name for the Virtual Machines  |
