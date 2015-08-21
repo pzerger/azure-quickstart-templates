@@ -6,6 +6,7 @@
 
 
  This template provisions an environment in Azure for learning Chef.
+ 
  The following resources are part of this deployment:
  - Ubuntu Server 14.04 running Chef Server 12
  - Windows Server 2012 R2 running as a Domain Controller
