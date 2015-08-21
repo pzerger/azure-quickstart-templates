@@ -12,6 +12,7 @@
  - Windows Server 2012 R2 non-domain-joined with ChefDK Installed
  - Windows Server 2012 R2 non-domain-joined for use as a Sandbox
 
+ 
  This template requires the following parameters which are preconfigured:
 
 
