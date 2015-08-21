@@ -5,17 +5,15 @@
 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Flearn_chef%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Learn Chef (https://github.com/starkfell/azure-quickstart-templates/tree/master/learn_chef)
 
 
- This template provisions an environment in Azure for learning Chef.
+This template provisions an environment in Azure for learning Chef.
  
  The following resources are part of this deployment:
  - Ubuntu Server 14.04 running Chef Server 12
  - Windows Server 2012 R2 running as a Domain Controller
  - Windows Server 2012 R2 non-domain-joined with ChefDK Installed
  - Windows Server 2012 R2 non-domain-joined for use as a Sandbox
- - Windows Server 2012 R2 non-domain-joined for use as a Sandbox
 
- 
- This template requires the following parameters which are preconfigured:
+This template requires the following parameters which are preconfigured:
 
 
 | Name             | Description                     |
