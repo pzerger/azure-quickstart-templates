@@ -174,7 +174,7 @@
         },
         "chefwinsandpubipDnsName": {
             "type": "string",
-            "defaultValue": "chefwinwks",
+            "defaultValue": "chefwinsand",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the Chef Windows Sandbox VM."
             }
