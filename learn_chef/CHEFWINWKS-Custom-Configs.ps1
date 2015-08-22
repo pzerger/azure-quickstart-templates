@@ -8,8 +8,7 @@
 - Downloads and Installs ChefDK.
 - Download the 'knife.rb' for this Environment from GitHub.
 - Downloads and Installs Notepad++.
-- Retrieves the Chef Server SSL Certificate using knife.
-- Copies the Chef Server Certificate to the the Chef Client 'trusted_certs' directory.
+- Downloads GitHub for Windows.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
 
@@ -167,30 +166,17 @@ If (!$?)
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Install_Failed.txt").Close()
 	}
 
-# Pausing Script for 5 Minutes and then continuing
-Start-Sleep -s 300
+# Download GitHub for Windows
+$GitHub_WebClient = New-Object System.Net.WebClient
+$GitHub_URI       = "https://github-windows.s3.amazonaws.com/GitHubSetup.exe"
+$GitHub_File      = "C:\Windows\Temp\GitHubSetup.exe"
+$GitHub_WebClient.DownloadFile($GitHub_URI,$GitHub_File)
 	
-# Retrieving the Chef Server SSL Certificate using knife
-cd "C:\chef\.chef"
-knife ssl fetch
-
 If ($?)
 	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieved_Successfully.txt").Close()
+		[System.IO.File]::Create("C:\Windows\Temp\_GitHub_for_Windows_Downloaded_Successfully.txt").Close()
 	}	
 If (!$?)
 	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Retrieval_Failed.txt").Close()
-	}
-
-# Copying the Chef Server Certificate to the the Chef Client 'trusted_certs' directory
-cp "C:\chef\.chef\trusted_certs\*" "C:\chef\trusted_certs\"
-
-If ($?)
-	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Successfully.txt").Close()
-	}	
-If (!$?)
-	{
-		[System.IO.File]::Create("C:\Windows\Temp\_Chef_Server_SSL_Cert_Copy_To_Chef_Client_Dir_Failed.txt").Close()
+		[System.IO.File]::Create("C:\Windows\Temp\_GitHub_for_Windows_Download_Failed.txt").Close()
 	}
