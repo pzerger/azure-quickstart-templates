@@ -272,6 +272,7 @@
         "CHEFWINSANDCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINSAND-Custom-Configs.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
+        "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
         "CHEFWINSANDCustomConfigsScriptName": "CHEFWINSAND-Custom-Configs.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
@@ -804,7 +805,7 @@
                             "name": "[concat('CHEFWINSAND','-data-disk1')]",
                             "caching": "None",
                             "createOption": "empty",
-                            "diskSizeGB": "[variables('CHEFWINWKSDataDiskSize')]",
+                            "diskSizeGB": "[variables('CHEFWINSANDDataDiskSize')]",
                             "lun": 0
                         }
                     ]
