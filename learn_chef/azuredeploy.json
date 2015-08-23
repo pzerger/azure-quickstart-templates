@@ -32,11 +32,11 @@
                 "Description": "Chef Subnet Prefix"
             }
         },
-        "contososysctrappName": {
+        "contosochefstorageName": {
             "type": "string",
-            "defaultValue": "contososysctrapp"
+            "defaultValue": "contosochefstorage"
         },
-        "contososysctrappType": {
+        "contosochefstorageType": {
             "type": "string",
             "defaultValue": "Standard_LRS",
             "allowedValues": [
@@ -305,16 +305,16 @@
             }
         },
         {
-            "name": "[parameters('contososysctrappName')]",
+            "name": "[parameters('contosochefstorageName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "location": "[parameters('contososysctrappLocation')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [ ],
             "tags": {
-                "displayName": "contososysctrapp"
+                "displayName": "contosochefstorage"
             },
             "properties": {
-                "accountType": "[parameters('contososysctrappType')]"
+                "accountType": "[parameters('contosochefstorageType')]"
             }
         },
         {
@@ -510,7 +510,7 @@
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contosochefstorageName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('ADDCNicName'))]"
             ],
             "tags": {
@@ -535,7 +535,7 @@
                     "osDisk": {
                         "name": "ADDCOSDisk",
                         "vhd": {
-                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('ADDCStorageAccountContainerName'), '/', variables('ADDCOSDiskName'), '.vhd')]"
+                            "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('ADDCStorageAccountContainerName'), '/', variables('ADDCOSDiskName'), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -543,7 +543,7 @@
                     "dataDisks": [
                         {
                             "vhd": {
-                                "uri": "[concat('http://contososysctrapp.blob.core.windows.net/vhds/', variables('ADDCDataDisk'),'-1.vhd')]"
+                                "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('ADDCStorageAccountContainerName'), '/', variables('ADDCDataDisk'),'-1.vhd')]"
                             },
                             "name": "[concat('ADDC','-data-disk1')]",
                             "caching": "None",
@@ -623,7 +623,7 @@
                 "displayName": "CHEFSRV"
             },
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contosochefstorageName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('CHEFSRVNicName'))]"
             ],
             "properties": {
@@ -645,7 +645,7 @@
                     "osDisk": {
                         "name": "CHEFSRVOSDisk",
                         "vhd": {
-                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('CHEFSRVStorageAccountContainerName'), '/', variables('CHEFSRVOSDiskName'), '.vhd')]"
+                            "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('CHEFSRVStorageAccountContainerName'), '/', variables('CHEFSRVOSDiskName'), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -688,7 +688,7 @@
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contosochefstorageName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('CHEFWINWKSNicName'))]"
             ],
             "tags": {
@@ -713,7 +713,7 @@
                     "osDisk": {
                         "name": "CHEFWINWKSOSDisk",
                         "vhd": {
-                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('CHEFWINWKSStorageAccountContainerName'), '/', variables('CHEFWINWKSOSDiskName'), '.vhd')]"
+                            "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('CHEFWINWKSStorageAccountContainerName'), '/', variables('CHEFWINWKSOSDiskName'), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -721,7 +721,7 @@
                     "dataDisks": [
                         {
                             "vhd": {
-                                "uri": "[concat('http://contososysctrapp.blob.core.windows.net/vhds/', variables('CHEFWINWKSDataDisk'),'-1.vhd')]"
+                                "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('CHEFWINWKSStorageAccountContainerName'), '/', variables('CHEFWINWKSDataDisk'),'-1.vhd')]"
                             },
                             "name": "[concat('CHEFWINWKS','-data-disk1')]",
                             "caching": "None",
@@ -767,7 +767,7 @@
             "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('contososysctrappName'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('contosochefstorageName'))]",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('CHEFWINSANDNicName'))]"
             ],
             "tags": {
@@ -792,7 +792,7 @@
                     "osDisk": {
                         "name": "CHEFWINSANDOSDisk",
                         "vhd": {
-                            "uri": "[concat('http://', parameters('contososysctrappName'), '.blob.core.windows.net/', variables('CHEFWINSANDStorageAccountContainerName'), '/', variables('CHEFWINSANDOSDiskName'), '.vhd')]"
+                            "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('CHEFWINSANDStorageAccountContainerName'), '/', variables('CHEFWINSANDOSDiskName'), '.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -800,7 +800,7 @@
                     "dataDisks": [
                         {
                             "vhd": {
-                                "uri": "[concat('http://contososysctrapp.blob.core.windows.net/vhds/', variables('CHEFWINSANDDataDisk'),'-1.vhd')]"
+                                "uri": "[concat('http://', parameters('contosochefstorageName'), '.blob.core.windows.net/', variables('CHEFWINSANDStorageAccountContainerName'), '/', variables('CHEFWINSANDDataDisk'),'-1.vhd')]"
                             },
                             "name": "[concat('CHEFWINSAND','-data-disk1')]",
                             "caching": "None",
