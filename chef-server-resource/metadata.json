@@ -1,7 +1,0 @@
-{
-  "itemDisplayName": "Chef 12 Server running on Ubuntu",
-  "description": "Deploy an Ubuntu VM and install Chef 12 using JSON parameters",
-  "summary": "Deploy an Ubuntu VM and install Chef 12 Server using JSON parameters",
-  "githubUsername": "starkfell",
-  "dateUpdated": "2015-07-24"
-}

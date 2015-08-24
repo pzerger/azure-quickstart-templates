@@ -1,7 +1,0 @@
-{
-	"storageAccountName": {  "value" : "" },
-        "adminUsername": {  "value" : "" },
-        "adminPassword": {  "value" : "" },
-        "dnsNameforLBIP": {  "value" : "" },
-        "vmSize": { "value": "Standard_D2" }
-}
