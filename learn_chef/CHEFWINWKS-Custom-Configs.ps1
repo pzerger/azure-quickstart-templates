@@ -5,6 +5,7 @@
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - Creates 'chef-repo' and 'cookbooks' Directory for ChefDK.
 - Creates '.chef' and 'trusted_certs' Directories for ChefDK.
+- Creates the 'C:\GitHub' Directory where the downloaded 'learn_chef' repo will reside.
 - Downloads and Installs ChefDK.
 - Download the 'knife.rb' for this Environment from GitHub.
 - Downloads and Installs Notepad++.
@@ -95,6 +96,18 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_Create_ChekDK_Certs_Directories_Failed.txt").Close()
+	}	
+
+# Creating the 'C:\GitHub' Directory where the downloaded 'learn_chef' repo will reside.
+[System.IO.Directory]::CreateDirectory("C:\GitHub")	
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Create_GitHub_Directory_Sucess.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Create_GitHub_Directory_Failed.txt").Close()
 	}	
 
 # Download Chef DK Kit
