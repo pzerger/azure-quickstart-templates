@@ -269,7 +269,7 @@
         "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINWKS-Custom-Configs.ps1",
         "CHEFWINSANDCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINSAND-Custom-Configs.ps1",
-        "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/ad-deploy-new-domain/install_chef_server.sh",
+        "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
         "CHEFWINSANDCustomConfigsScriptName": "CHEFWINSAND-Custom-Configs.ps1",
