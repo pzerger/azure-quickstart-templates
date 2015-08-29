@@ -5,7 +5,7 @@
 # Copyright (c) 2015 Ryan Irujo, All Rights Reserved.
 #
 #
-# Additional Notes:   The 'SQL_Server_2012_Custom_Config.ini' File used in this recipe will attempt to install
+# Additional Notes:   The 'SQL_Server_2014_SP1_Configuration_File.ini' File used in this recipe will attempt to install
 #                     SQL on the 'F:\' Drive of the Target Host. 
 #
 
@@ -15,17 +15,15 @@ usernames             = data_bag_item('SQL2014SP1', 'sql_account_usernames')
 passwords             = Chef::EncryptedDataBagItem.load('SQL2014SP1', 'sql_account_passwords', secret_key)
 iso_url               = "http://care.dlservice.microsoft.com/dl/download/2/F/8/2F8F7165-BB21-4D1E-B5D8-3BD3CE73C77D/SQLServer2014SP1-FullSlipstream-x64-ENU.iso"
 iso_path              = "C:\\Windows\\Temp\\SQLServer2014SP1-FullSlipstream-x64-ENU.iso"
-sql_config_file_url   = "http://lxubuchefwfs122.scom.local/SQLConfigFiles/SQL_Server_2014_SP1_Custom_Config.ini"
-sql_config_file_path  = "C:\\Windows\\Temp\\SQL_Server_2012_Custom_Config.ini"
-scom_sql_act          = usernames['sql_username']
-scom_sql_dr_act       = usernames['sql_dr_username']
-scom_sql_password     = passwords['sql_password']
-scom_sql_dr_password  = passwords['sql_dr_password']
+sql_config_file_url   = "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/Cookbooks/Install_SQL_Server_2014_SP1/files/SQL_Server_2014_SP1_Configuration_File.ini"
+sql_config_file_path  = "C:\\Windows\\Temp\\SQL_Server_2014_SP1_Configuration_File.ini"
+sql_username          = usernames['sql_username']
+sql_password          = passwords['sql_password']
 sql_agent_svc_act     = "NT AUTHORITY\\Network Service"
 
 # Creating a Temporary Directory to work from.
 directory "C:\\Temp\\" do
-        rights :full_control, "#{scom_sql_act}"
+        rights :full_control, "#{sql_username}"
         inherits true
         action :create
 	not_if '($SQL_Server_Service = (gwmi -class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
@@ -76,7 +74,7 @@ powershell_script 'Install SQL Server 2012 STD x64' do
         code <<-EOH
                 $SQL_Server_ISO_Drive_Letter = (gwmi -Class Win32_LogicalDisk | Where-Object {$_.VolumeName -eq "SQLServer"}).DeviceID
                 cd $SQL_Server_ISO_Drive_Letter\\
-                $Install_SQL = ./Setup.exe /q /ACTION=Install /SQLSVCPASSWORD="#{scom_sql_password}" /AGTSVCPASSWORD="#{scom_sql_password}" /ASSVCPASSWORD="#{scom_sql_password}" /ISSVCPASSWORD="#{scom_sql_password}" /RSSVCPASSWORD="#{scom_sql_dr_password}" /IACCEPTSQLSERVERLICENSETERMS /CONFIGURATIONFILE="#{sql_config_file_path}"
+                $Install_SQL = ./Setup.exe /q /ACTION=Install /SQLSVCPASSWORD="#{sql_password}" /AGTSVCPASSWORD="#{sql_password}" /ASSVCPASSWORD="#{sql_password}" /ISSVCPASSWORD="#{sql_password}" /RSSVCPASSWORD="#{sql_password}" /IACCEPTSQLSERVERLICENSETERMS /CONFIGURATIONFILE="#{sql_config_file_path}"
                 $Install_SQL > C:\\Temp\\SQL_Server_2012_STD_Install_Results.txt
                 EOH
         guard_interpreter :powershell_script
