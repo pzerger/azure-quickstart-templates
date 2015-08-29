@@ -1,6 +1,7 @@
 <# This Script does the following:
 - Disables IE ESC for Administrators.
 - Sets WinRM Unencrypted Traffic to enabled and Authentication to Basic.
+- Enables .NET Framework 3.5 for SQL Install.
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - Downloads and Installs Notepad++.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
@@ -40,7 +41,17 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Basic_Auth_Enabled_Failed.txt").Close()
+	
+#Enabling .NET Framework 3.5 for SQL Install.
+DISM /Online /Enable-Feature /FeatureName:NetFx3 /All
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_dotNET_Framework_35_Enabled_Sucessfully.txt").Close()
 	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_dotNET_Framework_35_Enabled_Failed.txt").Close()
 
 # Creating 'C:\Chef\trusted_certs' directory for the Chef Client.
 [System.IO.Directory]::CreateDirectory("C:\chef\trusted_certs")
