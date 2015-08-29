@@ -41,6 +41,7 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Basic_Auth_Enabled_Failed.txt").Close()
+	}
 	
 #Enabling .NET Framework 3.5 for SQL Install.
 DISM /Online /Enable-Feature /FeatureName:NetFx3 /All
@@ -52,7 +53,8 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_dotNET_Framework_35_Enabled_Failed.txt").Close()
-
+	}
+	
 # Creating 'C:\Chef\trusted_certs' directory for the Chef Client.
 [System.IO.Directory]::CreateDirectory("C:\chef\trusted_certs")
 
@@ -74,7 +76,7 @@ $Notepad_WebClient.DownloadFile($Notepad_URI,$Notepad_File)
 If ($?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Downloaded_Successfully.txt").Close()
-	}	
+	}
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Download_Failed.txt").Close()
@@ -86,7 +88,7 @@ C:\Windows\Temp\npp.6.8.1.Installer.exe /S
 If ($?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Installed_Successfully.txt").Close()
-	}	
+	}
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_NotepadPlusPlus_Install_Failed.txt").Close()
