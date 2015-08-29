@@ -5,6 +5,7 @@
 - Sets WinRM Unencrypted Traffic to enabled.
 - Enables IIS.
 - Enables Directory Browsing on Default Web Site.
+- Creates 'C:\inetpub\wwwroot\chef' directory for the Chef Client.
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
@@ -83,6 +84,18 @@ If (!$?)
 		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Directory_Browsing_Enabled_Failed.txt").Close()
 	}
 
+# Creating 'C:\inetpub\wwwroot\chef' directory for the Chef Client
+[System.IO.Directory]::CreateDirectory("C:\inetpub\wwwroot\chef")
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Create_IIS_chef_Directory_Sucess.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_Create_IIS_chef_Directory_Failed.txt").Close()
+	}	
+	
 # Creating 'C:\Chef\trusted_certs' directory for the Chef Client
 [System.IO.Directory]::CreateDirectory("C:\chef\trusted_certs")
 
