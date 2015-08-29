@@ -10,7 +10,7 @@
 #
 
 # Declaring Variables
-secret_key            = Chef::EncryptedDataBagItem.load_secret("http://lxubuchefwfs122.scom.local/Chef/SecretKeys/encrypted_sql2012_data_bag_secret")
+secret_key            = Chef::EncryptedDataBagItem.load_secret("http://addc.contoso.corp/chef/encrypted_data_bag_secret.txt")
 usernames             = data_bag_item('SQL2014SP1', 'sql_account_usernames')
 passwords             = Chef::EncryptedDataBagItem.load('SQL2014SP1', 'sql_account_passwords', secret_key)
 iso_url               = "http://care.dlservice.microsoft.com/dl/download/2/F/8/2F8F7165-BB21-4D1E-B5D8-3BD3CE73C77D/SQLServer2014SP1-FullSlipstream-x64-ENU.iso"
@@ -21,16 +21,8 @@ sql_username          = usernames['sql_username']
 sql_password          = passwords['sql_password']
 sql_agent_svc_act     = "NT AUTHORITY\\Network Service"
 
-# Creating a Temporary Directory to work from.
-directory "C:\\Temp\\" do
-        rights :full_control, "#{sql_username}"
-        inherits true
-        action :create
-	not_if '($SQL_Server_Service = (gwmi -class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
-end
-
-# Download the SQL Server 2012 Standard ISO from a Web Share.
-powershell_script 'Download SQL Server 2012 STD ISO' do
+# Download the SQL Server 2014 SP1 ISO from a Web Share.
+powershell_script 'Download SQL Server 2014 SP1 ISO' do
         code <<-EOH
                 $Client = New-Object System.Net.WebClient
                 $Client.DownloadFile("#{iso_url}", "#{iso_path}")
@@ -39,8 +31,8 @@ powershell_script 'Download SQL Server 2012 STD ISO' do
 	not_if '($SQL_Server_Service = (gwmi -class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
 end
 
-# Download the SQL Server 2012 Custom Configuration File from a Web Share.
-powershell_script 'Download SQL Server 2012 Custom Configuration File' do
+# Download the SQL Server 2014 SP1 Custom Configuration File from a Web Share.
+powershell_script 'Download SQL Server 2014 SP1 Custom Configuration File' do
         code <<-EOH
                 $Client = New-Object System.Net.WebClient
                 $Client.DownloadFile("#{sql_config_file_url}", "#{sql_config_file_path}")
@@ -49,19 +41,19 @@ powershell_script 'Download SQL Server 2012 Custom Configuration File' do
 	not_if '($SQL_Server_Service = (gwmi -class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
 end
 
-# Mounting the SQL Server 2012 SP1 Standard ISO.
-powershell_script 'Mount SQL Server 2012 STD ISO' do
+# Mounting the SQL Server 2014 SP1 ISO.
+powershell_script 'Mount SQL Server 2014 SP1 ISO' do
         code <<-EOH
-                Mount-DiskImage -ImagePath "C:\\Temp\\en_sql_server_2012_standard_edition_with_sp1_x64_dvd_1228198.iso"
+                Mount-DiskImage -ImagePath "#{iso_path}"
         if ($? -eq $True)
                 {
-                        echo "SQL Server 2012 STD ISO was mounted Successfully." > C:\\Temp\\SQL_Server_2012_STD_ISO_Mounted_Successfully.txt
+                        echo "The SQL Server 2014 SP1 ISO was mounted Successfully." > C:\\Windows\\Temp\\_SQL_Server_2014_SP1_ISO_Mounted_Successfully.txt
                         exit 0;
                 }
 
                 if ($? -eq $False)
         {
-                        echo "The SQL Server 2012 STD ISO Failed was unable to be mounted." > C:\\Temp\\SQL_Server_2012_STD_ISO_Mount_Failed.txt
+                        echo "The SQL Server 2014 SP1 ISO was unable to be mounted." > C:\\Windows\\Temp\\_SQL_Server_2014_SP1_ISO_Mount_Failed.txt
                         exit 2;
         }
                 EOH
@@ -69,21 +61,21 @@ powershell_script 'Mount SQL Server 2012 STD ISO' do
 	not_if '($SQL_Server_Service = (gwmi -class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
 end
 
-# Installing SQL Server 2012 Standard.
-powershell_script 'Install SQL Server 2012 STD x64' do
+# Installing SQL Server 2014 SP1 Standard.
+powershell_script 'Install SQL Server 2014 SP1 x64' do
         code <<-EOH
-                $SQL_Server_ISO_Drive_Letter = (gwmi -Class Win32_LogicalDisk | Where-Object {$_.VolumeName -eq "SQLServer"}).DeviceID
+                $SQL_Server_ISO_Drive_Letter = (gwmi -Class Win32_LogicalDisk | Where-Object {$_.VolumeName -eq "SQL2014_x64_ENU"}).DeviceID
                 cd $SQL_Server_ISO_Drive_Letter\\
                 $Install_SQL = ./Setup.exe /q /ACTION=Install /SQLSVCPASSWORD="#{sql_password}" /AGTSVCPASSWORD="#{sql_password}" /ASSVCPASSWORD="#{sql_password}" /ISSVCPASSWORD="#{sql_password}" /RSSVCPASSWORD="#{sql_password}" /IACCEPTSQLSERVERLICENSETERMS /CONFIGURATIONFILE="#{sql_config_file_path}"
-                $Install_SQL > C:\\Temp\\SQL_Server_2012_STD_Install_Results.txt
+                $Install_SQL > C:\\Windows\\Temp\\_SQL_Server_2014_SP1_Install_Results.txt
                 EOH
         guard_interpreter :powershell_script
         not_if '($SQL_Server_Service = (gwmi -Class Win32_Service | Where-Object {$_.Name -eq "MSSQLSERVER"}).Name -eq "MSSQLSERVER")'
 end
 
 
-# Dismounting the SQL Server 2012 STD ISO.
-powershell_script 'Dismount SQL Server 2012 STD ISO' do
+# Dismounting the SQL Server 2014 SP1 ISO.
+powershell_script 'Dismount SQL Server 2014 SP1 ISO' do
         code <<-EOH
                 Dismount-DiskImage -ImagePath "#{iso_path}"
                 EOH
@@ -92,8 +84,8 @@ powershell_script 'Dismount SQL Server 2012 STD ISO' do
 end
 
 
-# Removing the SQL Server 2012 STD ISO from the Temp Directory.
-powershell_script 'Delete SQL Server 2012 STD ISO' do
+# Removing the SQL Server 2014 SP1 ISO from the Temp Directory.
+powershell_script 'Delete SQL Server 2014 SP1 ISO' do
         code <<-EOH
                 [System.IO.File]::Delete("#{iso_path}")
                 EOH
@@ -101,8 +93,8 @@ powershell_script 'Delete SQL Server 2012 STD ISO' do
         only_if { File.exists?(iso_path)}
 end
 
-# Removing the SQL Server 2012 Custom Configuration File from the Temp Directory.
-powershell_script 'Delete SQL Server 2012 Custom Configuration File' do
+# Removing the SQL Server 2014 SP1 Custom Configuration File from the Temp Directory.
+powershell_script 'Delete SQL Server 2014 SP1 Custom Configuration File' do
         code <<-EOH
                 [System.IO.File]::Delete("#{sql_config_file_path}")
                 EOH
