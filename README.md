@@ -1,4 +1,4 @@
-# Azure Resource Manager QuickStart Templates
+# Azure QuickStart Templates for Learning Chef
 
 This is a repo that contains the **learn_chef** repo that will deploy a usable **Chef Environment** running on **Azure**.
 
