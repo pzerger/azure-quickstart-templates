@@ -3,6 +3,8 @@
 - Disables IE ESC for Administrators.
 - Adds DNS Record for the Chef Server.
 - Sets WinRM Unencrypted Traffic to enabled.
+- Enables IIS.
+- Enables Directory Browsing on Default Web Site.
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
 #>
@@ -57,7 +59,31 @@ If (!$?)
 		[System.IO.File]::Create("C:\Windows\Temp\_WinRM_Allow_Unencrypted_Enabled_Failed.txt").Close()
 	}
 
-# Creating 'C:\Chef\trusted_certs' directory for the Chef Client.
+# Enabling IIS
+Install-WindowsFeature Web-Server,Web-Mgmt-Console
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Enabled_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Enabled_Failed.txt").Close()
+	}
+
+# Enabling Directory Browsing on Default Web Site
+Set-WebConfigurationProperty -filter "/system.WebServer/directoryBrowse" -Name enabled -Value $true -PSPath "IIS:\Sites\Default Web Site"
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Directory_Browsing_Enabled_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Directory_Browsing_Enabled_Failed.txt").Close()
+	}
+
+# Creating 'C:\Chef\trusted_certs' directory for the Chef Client
 [System.IO.Directory]::CreateDirectory("C:\chef\trusted_certs")
 
 If ($?)
