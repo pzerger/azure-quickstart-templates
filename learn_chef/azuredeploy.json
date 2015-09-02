@@ -368,11 +368,7 @@
                             }
                         }
                     }
-                ],
-                "dnsSettings": {
-                    "domainNameLabel": "[variables('ADdomainNameFQDN')]",
-                    "dnsServers": [ "[variables('adNicIPAddress')]","8.8.8.8" ]
-                }
+                ]
             }
         },
         {
