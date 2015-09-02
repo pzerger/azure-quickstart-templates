@@ -358,7 +358,8 @@
                     {
                         "name": "ipconfig1",
                         "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[variables('adNicIPAddress')]",
                             "subnet": {
                                 "id": "[variables('ADDCSubnetRef')]"
                             },
@@ -367,7 +368,11 @@
                             }
                         }
                     }
-                ]
+                ],
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('ADdomainNameFQDN')]",
+                    "dnsServers": [ "[variables('adNicIPAddress')]" ]
+                }
             }
         },
         {
