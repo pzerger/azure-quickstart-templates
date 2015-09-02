@@ -371,7 +371,7 @@
                 ],
                 "dnsSettings": {
                     "domainNameLabel": "[variables('ADdomainNameFQDN')]",
-                    "dnsServers": [ "[variables('adNicIPAddress')]" ]
+                    "dnsServers": [ "[variables('adNicIPAddress')]","8.8.8.8" ]
                 }
             }
         },
