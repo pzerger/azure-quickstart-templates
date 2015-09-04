@@ -5,6 +5,7 @@
 - Sets WinRM Unencrypted Traffic to enabled.
 - Enables IIS.
 - Enables Directory Browsing on Default Web Site.
+- Creates SQL Administrator Domain Account for the Install_SQL_Server_2014_SP1 Chef Cookbook.
 - Creates 'C:\inetpub\wwwroot\chef' directory for the Chef Client.
 - Creates 'C:\Chef\trusted_certs' directory for the Chef Client.
 - File(s) are created in 'C:\Windows\Temp' stating whether the actions listed above were successful or not.
@@ -70,6 +71,18 @@ If ($?)
 If (!$?)
 	{
 		[System.IO.File]::Create("C:\Windows\Temp\_IIS_Enabled_Failed.txt").Close()
+	}
+
+# Creating SQL Administrator Domain Account  for the Install_SQL_Server_2014_SP1 Chef Cookbook.
+New-ADUser -Name "sqladmin" -AccountPassword (ConvertTo-SecureString -AsPlainText "P@ssw0rd1!" -Force) -Path "CN=Users,DC=contoso,DC=corp" -PasswordNeverExpires $true -ChangePasswordAtLogon $false -Enabled $true
+
+If ($?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_SQL_Admin_Domain_Account_Created_Sucessfully.txt").Close()
+	}
+If (!$?)
+	{
+		[System.IO.File]::Create("C:\Windows\Temp\_SQL_Admin_Domain_Account_Created_Failed.txt").Close()
 	}
 
 # Enabling Directory Browsing on Default Web Site
