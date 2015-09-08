@@ -269,10 +269,10 @@
         "CHEFSRVOSDiskName": "CHEFSRVOSDisk",
         "CHEFWINWKSOSDiskName": "CHEFWINWKSOSDisk",
         "CHEFWINSANDOSDiskName": "CHEFWINSANDOSDisk",
-        "ADDCVmSize": "Standard_D2",
-        "CHEFSRVVmSize": "Standard_D2",
-        "CHEFWINWKSVmSize": "Standard_D2",
-        "CHEFWINSANDVmSize": "Standard_D2",
+        "ADDCVmSize": "Standard_D1",
+        "CHEFSRVVmSize": "Standard_D1",
+        "CHEFWINWKSVmSize": "Standard_D1",
+        "CHEFWINSANDVmSize": "Standard_D1",
         "ADDCVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'ContosoNET')]",
         "ADDCSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DCSubnet')]",
         "ChefSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'ChefSubnet')]",
@@ -555,7 +555,7 @@
                         "publisher": "[variables('ADDCImagePublisher')]",
                         "offer": "[variables('ADDCImageOffer')]",
                         "sku": "[variables('ADDCWindowsOSVersion')]",
-                        "version": "latest"
+                        "version": "4.0.201506"
                     },
                     "osDisk": {
                         "name": "ADDCOSDisk",
@@ -665,7 +665,7 @@
                         "publisher": "[variables('CHEFSRVImagePublisher')]",
                         "offer": "[variables('CHEFSRVImageOffer')]",
                         "sku": "[variables('UbuntuOSVersion')]",
-                        "version": "latest"
+                        "version": "14.04.201506100"
                     },
                     "osDisk": {
                         "name": "CHEFSRVOSDisk",
@@ -733,7 +733,7 @@
                         "publisher": "[variables('CHEFWINWKSImagePublisher')]",
                         "offer": "[variables('CHEFWINWKSImageOffer')]",
                         "sku": "[variables('CHEFWINWKSWindowsOSVersion')]",
-                        "version": "latest"
+                        "version": "4.0.201506"
                     },
                     "osDisk": {
                         "name": "CHEFWINWKSOSDisk",
@@ -812,7 +812,7 @@
                         "publisher": "[variables('CHEFWINSANDImagePublisher')]",
                         "offer": "[variables('CHEFWINSANDImageOffer')]",
                         "sku": "[variables('CHEFWINSANDWindowsOSVersion')]",
-                        "version": "latest"
+                        "version": "4.0.201506"
                     },
                     "osDisk": {
                         "name": "CHEFWINSANDOSDisk",
