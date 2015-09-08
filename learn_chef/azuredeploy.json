@@ -5,7 +5,13 @@
         "location": {
             "type": "string",
             "defaultValue": "West Europe",
-            "allowedValues": [ "East US", "West US", "West Europe", "East Asia", "South East Asia" ],
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ],
             "metadata": {
                 "Description": "Deployment location"
             }
@@ -42,17 +48,6 @@
                 "Standard_LRS",
                 "Standard_GRS",
                 "Standard_ZRS"
-            ]
-        },
-        "contosochefappLocation": {
-            "type": "string",
-            "defaultValue": "West Europe",
-            "allowedValues": [
-                "East US",
-                "West US",
-                "West Europe",
-                "East Asia",
-                "South East Asia"
             ]
         },
         "ADDCName": {
@@ -228,7 +223,6 @@
         "ChefsubnetPrefix": "[parameters('ChefsubnetPrefix')]",
         "contosochefstorageName": "[parameters('contosochefstorageName')]",
         "contosochefstorageType": "[parameters('contosochefstorageType')]",
-        "contosochefappLocation": "[parameters('contosochefappLocation')]",
         "ADDCName": "[parameters('ADDCName')]",
         "CHEFSRVName": "[parameters('CHEFSRVName')]",
         "CHEFWINWKSName": "[parameters('CHEFWINWKSName')]",
@@ -331,7 +325,7 @@
         {
             "name": "[variables('contosochefstorageName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "location": "[variables('contosochefappLocation')]",
+            "location": "[variables('location')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [ ],
             "tags": {
