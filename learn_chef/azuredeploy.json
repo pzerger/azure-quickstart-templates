@@ -285,9 +285,9 @@
         "chefwinwkspubipName": "[parameters('chefwinwkspubipDnsName')]",
         "chefwinsandpubipName": "[parameters('chefwinsandpubipDnsName')]",
         "vnetwithDNSTemplateUri": "[concat(variables('AssetLocation'),'/vnet-with-dns-server.json')]",
-        "installADToolsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/ADDC-Custom-Configs.ps1",
-        "CHEFWINWKSCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINWKS-Custom-Configs.ps1",
-        "CHEFWINSANDCustomConfigsScriptUri": "https://azurechefeu.blob.core.windows.net/scripts/CHEFWINSAND-Custom-Configs.ps1",
+        "installADToolsScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/ADDC-Custom-Configs.ps1",
+        "CHEFWINWKSCustomConfigsScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/CHEFWINWKS-Custom-Configs.ps1",
+        "CHEFWINSANDCustomConfigsScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/CHEFWINSAND-Custom-Configs.ps1",
         "installChefServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_chef/install_chef_server.sh",
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
@@ -622,7 +622,7 @@
                             "properties": {
                                 "publisher": "Microsoft.Compute",
                                 "type": "CustomScriptExtension",
-                                "typeHandlerVersion": "1.2",
+                                "typeHandlerVersion": "1.4",
                                 "settings": {
                                     "fileUris": [ "[variables('installADToolsScriptUri')]" ],
                                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('installADToolsScriptName'))]"
@@ -771,7 +771,7 @@
                     "properties": {
                         "publisher": "Microsoft.Compute",
                         "type": "CustomScriptExtension",
-                        "typeHandlerVersion": "1.2",
+                        "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [ "[variables('CHEFWINWKSCustomConfigsScriptUri')]" ],
                             "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINWKSCustomConfigsScriptName'))]"
@@ -850,7 +850,7 @@
                     "properties": {
                         "publisher": "Microsoft.Compute",
                         "type": "CustomScriptExtension",
-                        "typeHandlerVersion": "1.2",
+                        "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [ "[variables('CHEFWINSANDCustomConfigsScriptUri')]" ],
                             "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINSANDCustomConfigsScriptName'))]"
