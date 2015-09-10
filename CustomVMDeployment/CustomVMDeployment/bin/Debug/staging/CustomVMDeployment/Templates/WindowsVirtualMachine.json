@@ -114,7 +114,7 @@
         },
         "CustomPSScriptAzureStorageURI": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/Lumagate/Client-ARM-Templates/master/CustomVMDeployment/CustomVMDeployment/Scripts/PowerShell-Custom-Configs.ps1?token%3DACoFdbqqy1qYauDTJlGFeMASInkpeD-mks5V-sKPwA%3D%3D",
+            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/CustomVMDeployment/CustomVMDeployment/Scripts/PowerShell-Custom-Configs.ps1",
             "metadata": {
                 "description": "The Location of the Custom PowerShell Script in Lumagate's GitHub Repository. Note the 'token' value at the end of the URL to access the Script in a Private Repository."
             }
