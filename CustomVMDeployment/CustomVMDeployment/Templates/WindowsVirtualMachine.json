@@ -114,14 +114,14 @@
         },
         "CustomPSScriptAzureStorageURI": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/Elsic/azure-quickstart-templates/master/learn_chef/CHEFWINSAND-Custom-Configs.ps1",
+            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/CustomVMDeployment/CustomVMDeployment/Scripts/PowerShell-Custom-Configs.ps1",
             "metadata": {
                 "description": "The Location of the Custom PowerShell Script in an Azure Storage Public Container."
             }
         },
         "CustomPSScriptFileName": {
             "type": "string",
-            "defaultValue": "CHEFWINSAND-Custom-Configs.ps1",
+            "defaultValue": "PowerShell-Custom-Configs.ps1",
             "metadata": {
                 "description": "Name of the PowerShell Script."
             }
