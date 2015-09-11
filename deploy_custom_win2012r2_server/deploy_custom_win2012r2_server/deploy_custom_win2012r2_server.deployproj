@@ -25,7 +25,6 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <Folder Include="Templates\" />
     <Folder Include="Tools\" />
   </ItemGroup>
   <ItemGroup>
@@ -33,11 +32,11 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
-    <Content Include="Templates\WindowsVirtualMachine.json" />
     <None Include="Scripts\deploy_custom_win2012r2_server.ps1" />
-    <None Include="Templates\WindowsVirtualMachine.param.dev.json" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Templates\deploy_custom_win2012r2_server.json" />
+    <None Include="Templates\deploy_custom_win2012r2_server.parameters.json" />
     <None Include="Tools\AzCopy.exe" />
     <None Include="Tools\Microsoft.Data.Edm.dll">
       <Visible>False</Visible>
