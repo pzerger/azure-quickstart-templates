@@ -18,7 +18,7 @@
         },
         "newStorageAccountName": {
             "type": "string",
-            "defaultValue": "singlevmteststorage",
+            "defaultValue": "customiissrvstorage",
             "metadata": {
                 "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
             }
@@ -51,7 +51,7 @@
         },
         "dnsNameForPublicIP": {
             "type": "string",
-            "defaultValue": "singletestvm",
+            "defaultValue": "customiissrv",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
             }
@@ -70,7 +70,7 @@
         },
         "VMName": {
             "type": "string",
-            "defaultValue": "TESTVM"
+            "defaultValue": "2012R2IISVM"
         },
         "VMSize": {
             "type": "string",
@@ -112,16 +112,16 @@
                 "description": "This is the FQDN for RDP Access into the VM."
             }
         },
-        "CustomPSScriptAzureStorageURI": {
+        "CustomIISPSScriptAzureStorageURI": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/CustomVMDeployment/CustomVMDeployment/Scripts/PowerShell-Custom-Configs.ps1",
+            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/deploy_custom_iis_server/deploy_custom_iis_server/Scripts/deploy_custom_iis_server.ps1",
             "metadata": {
-                "description": "The Location of the Custom PowerShell Script in Lumagate's GitHub Repository. Note the 'token' value at the end of the URL to access the Script in a Private Repository."
+                "description": "The Location of the Custom PowerShell Script on GitHub."
             }
         },
-        "CustomPSScriptFileName": {
+        "CustomIISPSScriptFileName": {
             "type": "string",
-            "defaultValue": "PowerShell-Custom-Configs.ps1",
+            "defaultValue": "deploy_custom_iis_server.ps1",
             "metadata": {
                 "description": "Name of the PowerShell Script."
             }
@@ -149,8 +149,8 @@
         "virtualNetworkName": "TestVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-        "CustomPSScriptAzureStorageURI": "[parameters('CustomPSScriptAzureStorageURI')]",
-        "CustomPSScriptFileName": "[parameters('CustomPSScriptFileName')]"
+        "CustomIISPSScriptAzureStorageURI": "[parameters('CustomIISPSScriptAzureStorageURI')]",
+        "CustomIISPSScriptFileName": "[parameters('CustomIISPSScriptFileName')]"
     },
     "resources": [
         {
@@ -281,14 +281,14 @@
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(variables('VMName'), '/' , variables('CustomPSScriptFileName'))]",
+                    "name": "[concat(variables('VMName'), '/' , variables('CustomIISPSScriptFileName'))]",
                     "location": "[variables('location')]",
                     "apiVersion": "2015-05-01-preview",
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
                     ],
                     "tags": {
-                        "displayName": "[concat(variables('VMName'), '/' , variables('CustomPSScriptFileName'))]"
+                        "displayName": "[concat(variables('VMName'), '/' , variables('CustomIISPSScriptFileName'))]"
                     },
                     "properties": {
                         "publisher": "Microsoft.Compute",
@@ -296,9 +296,9 @@
                         "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [
-                                "[variables('CustomPSScriptAzureStorageURI')]"
+                                "[variables('CustomIISPSScriptAzureStorageURI')]"
                             ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Bypass -file ', variables('CustomPSScriptFileName'))]"
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Bypass -file ', variables('CustomIISPSScriptFileName'))]"
                         }
                     }
                 }
