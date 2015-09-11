@@ -49,11 +49,11 @@
                 "description": "Password for the Virtual Machine."
             }
         },
-        "dnsNameForPublicIP": {
+        "ADdomainNameFQDN": {
             "type": "string",
-            "defaultValue": "customiissrv",
+            "defaultValue": "nondomainjoined",
             "metadata": {
-                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+                "description": "The FQDN of the AD Domain the VM is joined to or a Workgroup Name."
             }
         },
         "windowsOSVersion": {
@@ -107,7 +107,7 @@
         },
         "vmPublicIPAddressName": {
             "type": "string",
-            "defaultValue": "testvm",
+            "defaultValue": "customiissrv",
             "metadata": {
                 "description": "This is the FQDN for RDP Access into the VM."
             }
@@ -133,7 +133,7 @@
         "newStorageAccountType": "[parameters('newStorageAccountType')]",
         "adminUsername": "[parameters('adminUsername')]",
         "adminPassword": "[parameters('adminPassword')]",
-        "dnsNameForPublicIP": "[parameters('dnsNameForPublicIP')]",
+        "ADdomainNameFQDN": "[parameters('ADdomainNameFQDN')]",
         "windowsOSVersion": "[parameters('WindowsOSVersion')]",
         "VMName": "[parameters('VMName')]",
         "VMSize": "[parameters('VMSize')]",
@@ -176,7 +176,7 @@
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('dnsNameForPublicIP')]"
+                    "domainNameLabel": "[variables('ADdomainNameFQDN')]"
                 }
             }
         },
