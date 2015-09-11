@@ -105,16 +105,16 @@
                 "description": "This is the FQDN for RDP Access into the VM."
             }
         },
-        "CustomIISPSScriptAzureStorageURI": {
+        "CustomWin2012R2PSScriptAzureStorageURI": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/deploy_custom_iis_server/deploy_custom_iis_server/Scripts/deploy_custom_iis_server.ps1",
+            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/deploy_custom_win2012r2_server/deploy_custom_win2012r2_server/Scripts/deploy_custom_win2012r2_server.ps1",
             "metadata": {
                 "description": "The Location of the Custom PowerShell Script on GitHub."
             }
         },
-        "CustomIISPSScriptFileName": {
+        "CustomWin2012R2PSScriptFileName": {
             "type": "string",
-            "defaultValue": "deploy_custom_iis_server.ps1",
+            "defaultValue": "deploy_custom_win2012r2_server.ps1",
             "metadata": {
                 "description": "Name of the PowerShell Script."
             }
@@ -141,8 +141,8 @@
         "virtualNetworkName": "TestVNET",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-        "CustomIISPSScriptAzureStorageURI": "[parameters('CustomIISPSScriptAzureStorageURI')]",
-        "CustomIISPSScriptFileName": "[parameters('CustomIISPSScriptFileName')]"
+        "CustomWin2012R2PSScriptAzureStorageURI": "[parameters('CustomWin2012R2PSScriptAzureStorageURI')]",
+        "CustomWin2012R2PSScriptFileName": "[parameters('CustomWin2012R2PSScriptFileName')]"
     },
     "resources": [
         {
@@ -273,14 +273,14 @@
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "[concat(variables('VMName'), '/' , variables('CustomIISPSScriptFileName'))]",
+                    "name": "[concat(variables('VMName'), '/' , variables('CustomWin2012R2PSScriptFileName'))]",
                     "location": "[variables('location')]",
                     "apiVersion": "2015-05-01-preview",
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
                     ],
                     "tags": {
-                        "displayName": "[concat(variables('VMName'), '/' , variables('CustomIISPSScriptFileName'))]"
+                        "displayName": "[concat(variables('VMName'), '/' , variables('CustomWin2012R2PSScriptFileName'))]"
                     },
                     "properties": {
                         "publisher": "Microsoft.Compute",
@@ -288,9 +288,9 @@
                         "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [
-                                "[variables('CustomIISPSScriptAzureStorageURI')]"
+                                "[variables('CustomWin2012R2PSScriptAzureStorageURI')]"
                             ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Bypass -file ', variables('CustomIISPSScriptFileName'))]"
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Bypass -file ', variables('CustomWin2012R2PSScriptFileName'))]"
                         }
                     }
                 }
