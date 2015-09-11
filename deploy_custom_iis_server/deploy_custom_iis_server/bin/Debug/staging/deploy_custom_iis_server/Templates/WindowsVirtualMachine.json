@@ -49,13 +49,6 @@
                 "description": "Password for the Virtual Machine."
             }
         },
-        "ADdomainNameFQDN": {
-            "type": "string",
-            "defaultValue": "nondomainjoined",
-            "metadata": {
-                "description": "The FQDN of the AD Domain the VM is joined to or a Workgroup Name."
-            }
-        },
         "windowsOSVersion": {
             "type": "string",
             "defaultValue": "2012-R2-Datacenter",
@@ -133,7 +126,6 @@
         "newStorageAccountType": "[parameters('newStorageAccountType')]",
         "adminUsername": "[parameters('adminUsername')]",
         "adminPassword": "[parameters('adminPassword')]",
-        "ADdomainNameFQDN": "[parameters('ADdomainNameFQDN')]",
         "windowsOSVersion": "[parameters('WindowsOSVersion')]",
         "VMName": "[parameters('VMName')]",
         "VMSize": "[parameters('VMSize')]",
@@ -176,7 +168,7 @@
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
-                    "domainNameLabel": "[variables('ADdomainNameFQDN')]"
+                    "domainNameLabel": "[variables('vmPublicIPAddressName')]"
                 }
             }
         },
