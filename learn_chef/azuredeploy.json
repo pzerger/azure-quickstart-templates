@@ -84,7 +84,7 @@
         },
         "ADDCAdminPassword": {
             "type": "securestring",
-            "defaultValue": "P@ssw0rd1!"
+            "defaultValue": "LearnChef!"
         },
         "CHEFSRVAdminPassword": {
             "type": "securestring",
