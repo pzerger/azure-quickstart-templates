@@ -1,12 +1,15 @@
-# Deploy Apache Server using Docker in Azure
+# Deploy Apache Server on Ubuntu 14.04 using Docker
 
 | Deploy to Azure  | Author                          | Template Name   |
 |:-----------------|:--------------------------------| :---------------| :---------------|
-| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fdeploy_apache_on_docker%2Fdeploy_apache_on_docker%2FTemplates%2Fdeploy_apache_on_docker.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Deploy Apache on Docker (https://github.com/starkfell/azure-quickstart-templates/tree/master/learn_chef)
+| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fdeploy_apache_on_docker%2Fdeploy_apache_on_docker%2FTemplates%2Fdeploy_apache_on_docker.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Deploy Apache on Docker (https://github.com/starkfell/azure-quickstart-templates/tree/master/deploy_apache_on_docker)
 
 This template provisions an Ubuntu Server 14.04 VM and then installs an Apache Docker Image from Docker Hub using the Docker Extension.
 
 The VM deployed in sized to **Standard_D1** by default.
+
+This template can be deployed using a different **Docker Image** from **Docker Hub** other than **starkfell/apache-php**; however, your mileage will vary.
+
 
 This template requires the following parameters which are preconfigured:
 
