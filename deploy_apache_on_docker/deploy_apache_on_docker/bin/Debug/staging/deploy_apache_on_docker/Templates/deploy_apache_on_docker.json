@@ -114,9 +114,7 @@
         "DockerSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DockerSubnet')]",
         "DOCKERSRVStorageAccountContainerName": "vhds",
         "DOCKERSRVNicName": "[concat(variables('DOCKERSRVName'), 'NetworkInterface')]",
-        "dockersrvpubipName": "[parameters('dockersrvpubipDnsName')]",
-        "installDockerServerScriptUri": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/learn_docker/install_docker_on_ubuntu.sh",
-        "installDockerServerScriptName": "install_docker_on_ubuntu.sh"
+        "dockersrvpubipName": "[parameters('dockersrvpubipDnsName')]"
     },
     "resources": [
         {
@@ -259,7 +257,7 @@
                         "settings": {
                             "compose": {
                                 "apache": {
-                                    "image": "starkfell/apache",
+                                    "image": "starkfell/apache-php",
                                     "ports": ["80:80"]
                                 }
                             }
