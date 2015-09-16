@@ -86,12 +86,19 @@
             },
             "defaultValue": "10.0.1.4"
         },
-        "AssetLocation": {
+        "DockerImage": {
             "type": "string",
             "metadata": {
-                "description": "The location of resources such as templates and DSC modules that the script is dependent"
+                "description": "The Name of the Docker Image to be pulled from Docker Hub."
             },
-            "defaultValue": "https://raw.githubusercontent.com/starkfell/azure-quickstart-templates/master/deploy_docker_on_ubuntu"
+            "defaultValue": "starkfell/apache-php"
+        },
+        "DockerPorts": {
+            "type": "string",
+            "metadata": {
+                "description": "The Network Port(s) that will be forwarded from the Container to the Docker Host."
+            },
+            "defaultValue": "80:80"
         }
     },
     "variables": {
@@ -105,7 +112,6 @@
         "DOCKERSRVAdminPassword": "[parameters('DOCKERSRVAdminPassword')]",
         "UbuntuOSVersion": "[parameters('UbuntuOSVersion')]",
         "DockerSrvNicIPAddress": "[parameters('DockerSrvNicIPAddress')]",
-        "AssetLocation": "[parameters('AssetLocation')]",
         "DOCKERSRVImagePublisher": "Canonical",
         "DOCKERSRVImageOffer": "UbuntuServer",
         "DOCKERSRVOSDiskName": "DOCKERSRVOSDisk",
@@ -114,7 +120,9 @@
         "DockerSubnetRef": "[concat(variables('ADDCVnetID'), '/subnets/', 'DockerSubnet')]",
         "DOCKERSRVStorageAccountContainerName": "vhds",
         "DOCKERSRVNicName": "[concat(variables('DOCKERSRVName'), 'NetworkInterface')]",
-        "dockersrvpubipName": "[parameters('dockersrvpubipDnsName')]"
+        "dockersrvpubipName": "[parameters('dockersrvpubipDnsName')]",
+        "DockerImage": "[parameters('DockerImage')]",
+        "DockerPorts": "[parameters('DockerPorts')]"
     },
     "resources": [
         {
@@ -201,7 +209,7 @@
             "location": "[variables('location')]",
             "apiVersion": "2015-05-01-preview",
             "tags": {
-                "displayName": "DOCKERSRV"
+                "displayName": "[variables('DOCKERSRVName')]"
             },
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', variables('contosodockerstorageName'))]",
@@ -257,8 +265,8 @@
                         "settings": {
                             "compose": {
                                 "apache": {
-                                    "image": "starkfell/apache-php",
-                                    "ports": ["80:80"]
+                                    "image": "[variables('DockerImage')]",
+                                    "ports": ["[variables('DockerPorts')]"]
                                 }
                             }
                         }
