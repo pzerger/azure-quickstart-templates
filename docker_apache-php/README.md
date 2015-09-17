@@ -2,7 +2,7 @@
 
 | Deploy to Azure  | Author                          | Template Name   |
 |:-----------------|:--------------------------------| :---------------| :---------------|
-| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fdeploy_apache_on_docker%2Fdeploy_apache_on_docker%2FTemplates%2Fdeploy_apache_on_docker.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Deploy Apache on Docker (https://github.com/starkfell/azure-quickstart-templates/tree/master/deploy_apache_on_docker)
+| <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fdocker_apache-php%2Fdocker_apache-php%2FTemplates%2Fdocker_apache-php.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Deploy Apache on Docker (https://github.com/starkfell/azure-quickstart-templates/tree/master/docker_apache-php)
 
 This template provisions an Ubuntu Server 14.04 VM with Docker (using the [Docker Extension][ext]) and then starts an Apache Server instance listening on port 80. 
 The container is created using the [Docker Compose][compose] capabilities of the [Azure Docker Extension][ext].
