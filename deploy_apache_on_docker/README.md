@@ -1,14 +1,14 @@
-# Deploy Apache Server on Ubuntu 14.04 using Docker
+# Deployment of Apache Server Container using Docker Compose
 
 | Deploy to Azure  | Author                          | Template Name   |
 |:-----------------|:--------------------------------| :---------------| :---------------|
 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fstarkfell%2Fazure-quickstart-templates%2Fmaster%2Fdeploy_apache_on_docker%2Fdeploy_apache_on_docker%2FTemplates%2Fdeploy_apache_on_docker.json" target="_blank"><img src="http://azuredeploy.net/deploybutton_small.png"/></a> | [starkfell](https://github.com/starkfell) | Deploy Apache on Docker (https://github.com/starkfell/azure-quickstart-templates/tree/master/deploy_apache_on_docker)
 
-This template provisions an Ubuntu Server 14.04 VM and then installs an Apache Docker Image from Docker Hub using the Docker Extension.
+This template provisions an Ubuntu Server 14.04 VM with Docker (using the [Docker Extension][ext]) and then starts an Apache Server instance listening on port 80. 
+The container is created using the [Docker Compose][compose] capabilities of the [Azure Docker Extension][ext].
 
-The VM deployed in sized to **Standard_D1** by default.
-
-This template can be deployed using a different **Docker Image** from **Docker Hub** other than **starkfell/apache-php**; however, your mileage will vary.
+This template can be deployed using a different **Apache Docker Image** from **Docker Hub** other than **starkfell/apache-php**; however,
+your results will vary based upon the configuration of the Image you use.
 
 
 This template requires the following parameters which are preconfigured:
@@ -30,3 +30,6 @@ This template requires the following parameters which are preconfigured:
 | DOCKERSRVNICIPADDRESS | Static IP Address of the Docker Server NIC Card |
 | DOCKERIMAGE | The Name of the Docker Image to be pulled from Docker Hub |
 | DOCKERPORTS | The Network Port(s) that will be forwarded from the Container to the Docker Host |
+
+[ext]: https://github.com/Azure/azure-docker-extension
+[compose]: https://docs.docker.com/compose
