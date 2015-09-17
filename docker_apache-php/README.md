@@ -24,7 +24,7 @@ This template requires the following parameters which are preconfigured:
 | CONTOSODOCKERSTORAGETYPE | The Type of Redundant (or lack thereof) Storage Type to use |
 | DOCKERSRVNAME | Name of the Docker Server |
 | DOCKERSRVADMINUSERNAME | Admin Username of the Docker Server |
-| DOCKERSRVADMINPASSWORD | Admin Password of the Docker Server |
+| DOCKERSRVADMINPASSWORD | Admin Password of the Docker Server (Default Password in Template is used by default. Will show up as blank during Template Deployment in Azure Portal) |
 | UBUNTUOSVERSION | Ubuntu OS Version that the Docker Server is running |
 | DOCKERSRVPUBIPDNSNAME | Publicly accessible FQDN associated with the Docker Server |
 | DOCKERSRVNICIPADDRESS | Static IP Address of the Docker Server NIC Card |
