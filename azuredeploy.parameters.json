@@ -1,0 +1,27 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "West Europe",
+            "type": "string",
+            "defaultValue": "West Europe",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        },
+        "chefsrvpubipDnsName": {
+            "value": "chefsrv1"
+        },
+        "chefwinwkspubipDnsName": {
+            "value": "chefwinwks1"
+        },
+        "chefwinsandpubipDnsName": {
+            "value": "chefwinsand1"
+        }
+    }
+}

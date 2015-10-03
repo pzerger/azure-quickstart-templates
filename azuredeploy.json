@@ -292,6 +292,7 @@
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
         "CHEFWINSANDCustomConfigsScriptName": "CHEFWINSAND-Custom-Configs.ps1",
+        "PauseAndFlushScriptName": "PauseAndFlush.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
     "resources": [
@@ -777,7 +778,40 @@
                             "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINWKSCustomConfigsScriptName'))]"
                         }
                     }
+                },
+                               {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "CHEFWINWKS/domainjoin",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINWKSName'))]",
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
+                "Microsoft.Resources/deployments/UpdateDCVNetDNS",
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINWKSName'),'/extensions/CHEFWINWKSCustomConfigsScript')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
+                    "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
+                    "Properties": {
+                        "DomainName": "[parameters('AdDomainNameFQDN')]",
+                        "AdminCreds": {
+                            "UserName": "[parameters('ADDCAdminUserName')]",
+                            "Password": "PrivateSettingsRef:adminPassword"
+                        }
+                    }
+                },
+                "protectedSettings": {
+                    "Items": {
+                        "adminPassword": "[parameters('CHEFWINWKSAdminPassword')]"
+                    }
                 }
+            }
+        }
             ]
         },
         {
@@ -853,10 +887,44 @@
                         "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [ "[variables('CHEFWINSANDCustomConfigsScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINSANDCustomConfigsScriptName'))]"
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINSANDCustomConfigsScriptName'))]",
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('PauseAndFlushScriptName'))]"
                         }
                     }
+                },
+                {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "CHEFWINSAND/domainjoin",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('CHEFWINSANDName'))]",
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('ADDCName'),'/extensions/CreateADForest')]",
+                "Microsoft.Resources/deployments/UpdateDCVNetDNS",
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('CHEFWINSANDName'),'/extensions/CHEFWINSANDCustomConfigsScript')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "ModulesUrl": "[concat(parameters('assetLocation'),'/Configuration.zip')]",
+                    "ConfigurationFunction": "Configuration.ps1\\DomainJoin",
+                    "Properties": {
+                        "DomainName": "[parameters('AdDomainNameFQDN')]",
+                        "AdminCreds": {
+                            "UserName": "[parameters('ADDCAdminUserName')]",
+                            "Password": "PrivateSettingsRef:adminPassword"
+                        }
+                    }
+                },
+                "protectedSettings": {
+                    "Items": {
+                        "adminPassword": "[parameters('CHEFWINSANDAdminPassword')]"
+                    }
                 }
+            }
+        }
             ]
         },
         {
