@@ -292,7 +292,6 @@
         "installADToolsScriptName": "ADDC-Custom-Configs.ps1",
         "CHEFWINWKSCustomConfigsScriptName": "CHEFWINWKS-Custom-Configs.ps1",
         "CHEFWINSANDCustomConfigsScriptName": "CHEFWINSAND-Custom-Configs.ps1",
-        "PauseAndFlushScriptName": "PauseAndFlush.ps1",
         "installChefServerScriptName": "install_chef_server.sh"
     },
     "resources": [
@@ -767,7 +766,8 @@
                     "location": "[variables('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', variables('CHEFWINWKSName'))]",
-                        "[concat('Microsoft.Compute/virtualMachines/', variables('ADDCName'),'/extensions/CreateADForest')]"
+                        "[concat('Microsoft.Compute/virtualMachines/', variables('ADDCName'),'/extensions/CreateADForest')]",
+                        "Microsoft.Resources/deployments/UpdateDCVNetDNS"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Compute",
@@ -879,7 +879,8 @@
                     "location": "[variables('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', variables('CHEFWINSANDName'))]",
-                        "[concat('Microsoft.Compute/virtualMachines/', variables('ADDCName'),'/extensions/CreateADForest')]"
+                        "[concat('Microsoft.Compute/virtualMachines/', variables('ADDCName'),'/extensions/CreateADForest')]",
+                        "Microsoft.Resources/deployments/UpdateDCVNetDNS"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Compute",
@@ -887,8 +888,7 @@
                         "typeHandlerVersion": "1.4",
                         "settings": {
                             "fileUris": [ "[variables('CHEFWINSANDCustomConfigsScriptUri')]" ],
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINSANDCustomConfigsScriptName'))]",
-                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('PauseAndFlushScriptName'))]"
+                            "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ',variables('CHEFWINSANDCustomConfigsScriptName'))]"
                         }
                     }
                 },
